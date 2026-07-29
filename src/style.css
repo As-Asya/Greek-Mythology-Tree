@@ -1,156 +1,177 @@
 html,
 body {
+    margin: 0;
 
+width: 100%;
 
-margin:
-    0;
+height: 100%;
 
-width:
-    100%;
-
-height:
-    100%;
-
-overflow:
-    hidden;
+overflow: hidden;
 
 font-family:
     Georgia,
     serif;
 
 background:
-    #F6F1E8;
+    #F4F0E7;
 
-
-}
+color:
+    #302B24;
+    }
 
 #layout {
-
-
-display: flex;
-
-width: 100vw;
-
-height: 100vh;
-
-position: relative;
-
-
-}
-
-
-#cy {
-
-
-flex: 1;
-
-min-width: 0;
-
-height: 100vh;
-
-position: relative;
-
-background: #F6F1E8;
-
-
-}
-
-
-#info {
-
+    display:
+    flex;
 
 width:
-    320px;
+    100vw;
+
+height:
+    100vh;
+
+position:
+    relative;
+
+background:
+    #F4F0E7;
+    }
+
+#cy {
+    flex:
+    1;
+
+min-width:
+    0;
+
+height:
+    100vh;
+
+position:
+    relative;
+
+background:
+    radial-gradient(
+        circle at 50% 40%,
+        #FBF8F1 0%,
+        #F4F0E7 68%,
+        #EEE8DC 100%
+    );
+    }
+
+/* =========================
+ПРАВА ПАНЕЛЬ
+========================= */
+
+#info {
+    width:
+    340px;
 
 box-sizing:
     border-box;
 
 padding:
-    24px;
+    34px 30px;
 
 background:
-    #FCFAF5;
+    rgba(
+        252,
+        250,
+        245,
+        0.96
+    );
 
 border-left:
-    1px solid #D8CDB7;
+    1px solid
+    #DED5C4;
+
+box-shadow:
+    -10px 0 30px
+    rgba(
+        83,
+        68,
+        43,
+        0.06
+    );
 
 overflow-y:
     auto;
-
-
-}
+    }
 
 #info h2 {
+    margin:
+    0 0 10px;
 
+padding-bottom:
+    14px;
 
-margin-top:
-    0;
+border-bottom:
+    1px solid
+    #E4DCCF;
 
 color:
-    #2B2B2B;
+    #302B24;
 
-
-}
-
-#info h3 {
-
-
-margin-top:
+font-size:
     28px;
 
-margin-bottom:
-    8px;
+line-height:
+    1.15;
+    }
+
+#info h3 {
+    margin:
+    27px 0 10px;
 
 color:
-    #5D4A2A;
+    #665235;
 
-
-}
+font-size:
+    18px;
+    }
 
 #info p {
-
+    margin:
+    0;
 
 line-height:
-    1.5;
+    1.65;
 
 color:
-    #4A453D;
-
-
-}
+    #5B554C;
+    }
 
 #info ul {
-
+    margin:
+    10px 0 0;
 
 padding-left:
-    20px;
-
-
-}
+    21px;
+    }
 
 #info li {
+    margin-bottom:
+    9px;
 
+color:
+    #5B554C;
+    }
 
-margin-bottom:
-    7px;
-
-
-}
+/* =========================
+ПОСИЛАННЯ ПЕРСОНАЖІВ
+========================= */
 
 .person-link {
-
-
-background:
-    none;
+    padding:
+    0;
 
 border:
     none;
 
-padding:
-    0;
+background:
+    transparent;
 
 color:
-    #5D4A2A;
+    #6B522B;
 
 font:
     inherit;
@@ -161,22 +182,27 @@ cursor:
 text-decoration:
     underline;
 
+text-decoration-color:
+    #CBB88E;
 
-}
+text-underline-offset:
+    3px;
+
+transition:
+    color 0.18s ease;
+    }
 
 .person-link:hover {
+    color:
+    #A06F1B;
+    }
 
-
-color:
-    #9B7742;
-
-
-}
+/* =========================
+КНОПКИ МАСШТАБУ
+========================= */
 
 #controls {
-
-
-position:
+    position:
     absolute;
 
 left:
@@ -195,61 +221,83 @@ flex-direction:
     column;
 
 gap:
-    8px;
-
-
-}
+    9px;
+    }
 
 #controls button {
-
-
-width:
+    width:
     46px;
 
 height:
     46px;
 
 border:
-    none;
+    1px solid
+    #E2D9C9;
 
 border-radius:
-    12px;
+    13px;
 
 background:
-    #FFFFFF;
+    rgba(
+        255,
+        255,
+        255,
+        0.94
+    );
 
 color:
-    #4A3B24;
+    #4C402D;
 
 box-shadow:
-    0 3px 10px
-    rgba(0, 0, 0, 0.2);
+    0 5px 16px
+    rgba(
+        64,
+        52,
+        33,
+        0.13
+    );
 
 font-size:
-    22px;
+    21px;
 
 cursor:
     pointer;
 
 transition:
-    transform 0.2s;
-
-
-}
+    transform 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+    }
 
 #controls button:hover {
+    transform:
+    translateY(-2px);
 
+background:
+    #FFF9EB;
 
-transform:
-    scale(1.05);
+box-shadow:
+    0 8px 20px
+    rgba(
+        64,
+        52,
+        33,
+        0.17
+    );
+    }
 
+#controls button:active {
+    transform:
+    translateY(0);
+    }
 
-}
+/* =========================
+ПОШУК
+========================= */
 
 #search {
-
-
-position:
+    position:
     absolute;
 
 top:
@@ -263,60 +311,81 @@ z-index:
 
 width:
     250px;
-
-
-}
+    }
 
 #searchInput {
-
-
-width:
+    width:
     100%;
 
 box-sizing:
     border-box;
 
 padding:
-    12px 14px;
+    13px 15px;
 
 border:
-    1px solid #D8CDB7;
+    1px solid
+    #DDD3C1;
 
 border-radius:
-    10px;
+    13px;
 
 outline:
     none;
 
 background:
-    #FFFFFF;
+    rgba(
+        255,
+        255,
+        255,
+        0.96
+    );
 
 color:
-    #2B2B2B;
+    #302B24;
 
 font:
     inherit;
 
 box-shadow:
-    0 3px 10px
-    rgba(0, 0, 0, 0.12);
+    0 5px 16px
+    rgba(
+        64,
+        52,
+        33,
+        0.12
+    );
 
+transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+    }
 
-}
+#searchInput::placeholder {
+    color:
+    #91897E;
+    }
 
 #searchInput:focus {
+    border-color:
+    #B99756;
 
+box-shadow:
+    0 6px 19px
+    rgba(
+        116,
+        88,
+        39,
+        0.16
+    );
+    }
 
-border-color:
-    #B89B5E;
-
-
-}
+/* =========================
+РЕЗУЛЬТАТИ ПОШУКУ
+========================= */
 
 #searchResults {
-
-
-width:
+    width:
     100%;
 
 max-height:
@@ -328,41 +397,61 @@ overflow-y:
 box-sizing:
     border-box;
 
+margin-top:
+    6px;
+
 background:
-    #FFFFFF;
+    rgba(
+        255,
+        255,
+        255,
+        0.98
+    );
+
+border:
+    1px solid
+    #E2D9C9;
 
 border-radius:
-    0 0 10px 10px;
+    13px;
 
 box-shadow:
-    0 5px 14px
-    rgba(0, 0, 0, 0.15);
+    0 10px 25px
+    rgba(
+        64,
+        52,
+        33,
+        0.16
+    );
+    }
 
-
-}
+#searchResults:empty {
+    display:
+    none;
+    }
 
 .search-result {
-
-display:
+    display:
     block;
 
 width:
     100%;
 
 padding:
-    11px 14px;
+    12px 15px;
 
 border:
     none;
 
 border-bottom:
-    1px solid #EEE7DA;
+    1px solid
+    #EEE7DA;
 
 background:
-    #FFFFFF;
+    transparent;
 
 color:
-    #2B2B2B;
+    #3D372F;
 
 font:
     inherit;
@@ -373,26 +462,31 @@ text-align:
 cursor:
     pointer;
 
+transition:
+    background 0.15s ease,
+    color 0.15s ease;
+    }
 
-}
+.search-result:last-child {
+    border-bottom:
+    none;
+    }
 
 .search-result:hover {
-
-
-background:
-    #F3EBDD;
-
-
-}
-
-.no-results {
-
-
-padding:
-    12px 14px;
+    background:
+    #F8F0E0;
 
 color:
-    #77716A;
+    #76531D;
+    }
 
+.no-results {
+    padding:
+    13px 15px;
 
-}
+color:
+    #827A70;
+
+text-align:
+    center;
+    }

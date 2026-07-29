@@ -3,6 +3,18 @@
     {
       "id": "gaia-uranus",
       "partners": ["gaia", "uranus"]
+    },
+    {
+      "id": "chaos",
+      "partners": ["chaos"]
+    },
+    {
+      "id": "gaia-chaos",
+      "partners": ["gaia", "chaos"]
+    },
+    {
+      "id": "Nyx-Erebus",
+      "partners": ["Nyx", "Erebus"]
     }
   ],
 
@@ -12,44 +24,74 @@
       "name": "Хаос",
       "subtitle": "Первісна порожнеча, з якої виник світ",
       "description": "",
-      "type": "primordial",
-      "group": "immortal",
-      "power": 5,
       "relationship": null,
       "consorts": []
     },
     {
       "id": "gaia",
       "name": "Гая",
-      "subtitle": "Первісна богиня Землі",
+      "subtitle": "Первісна богиня землі",
       "description": "",
-      "type": "primordial",
-      "group": "immortal",
-      "power": 4,
-      "relationship": null,
+      "relationship": "chaos",
       "consorts": ["uranus"]
     },
     {
       "id": "uranus",
       "name": "Уран",
-      "subtitle": "Первісний бог Неба",
+      "subtitle": "Первісне божнство неба",
       "description": "",
-      "type": "primordial",
-      "group": "immortal",
-      "power": 4,
-      "relationship": null,
+      "relationship": "gaia-chaos",
       "consorts": ["gaia"]
+    },
+      {
+      "id": "Nyx",
+      "name": "Нікс",
+      "subtitle": "Первісна богиня ночі",
+      "description": "",
+      "relationship": "chaos",
+      "consorts": []
+    },
+    {
+      "id": "Erebus",
+      "name": "Ереб",
+      "subtitle": "Первісний божество вічного мороку",
+      "description": "",
+      "relationship": "chaos",
+      "consorts": []
+    },
+    {
+      "id": "Tartarus",
+      "name": "Тартар",
+      "subtitle": "Первісне божество і персоніфікація найглибших частин Підземного Царства",
+      "description": "",
+      "relationship": "chaos",
+      "consorts": []
+    },
+    {
+      "id": "Hemera",
+      "name": "Гемера",
+      "subtitle": "Первісна богиня дня",
+      "description": "",
+      "relationship": "Nyx-Erebus",
+      "consorts": ["Aether"]
+    },
+    {
+      "id": "Aether",
+      "name": "Етер",
+      "subtitle": "Первісне божество найвищого шару повітря, яким дихають боги",
+      "description": "",
+      "relationship": "Nyx-Erebus",
+      "consorts": ["Hemera"]
     },
     {
       "id": "cronus",
       "name": "Кронос",
       "subtitle": "Наймолодший із титанів",
       "description": "",
-      "type": "titan",
-      "group": "immortal",
-      "power": 3,
       "relationship": "gaia-uranus",
       "consorts": []
     }
+    
+   
   ]
 }

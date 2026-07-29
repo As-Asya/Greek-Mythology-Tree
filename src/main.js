@@ -9,195 +9,105 @@ import { setGraph, focusCharacter } from "./graph.js";
 cytoscape.use(dagre);
 
 async function start() {
-
-
-const response = await fetch("./mythology.json");
+const response = await fetch("/mythology.json");
 const data = await response.json();
+const characterNodes = data.characters.map((character) => ({
+    data: {
+        id: character.id,
+        label: character.name,
+        type: character.type,
+        group: character.group,
+        power: character.power,
+        kind: "character"
+    }
+}));
 
-// =========================
-// ПЕРСОНАЖІ
-// =========================
-
-const characterNodes = data.characters.map(
-    character => ({
-
-        data: {
-            id: character.id,
-            label: character.name,
-            type: character.type,
-            group: character.group,
-            power: character.power,
-            kind: "character"
-        }
-
-    })
-);
-
-// =========================
-// ВУЗЛИ СТОСУНКІВ
-// =========================
-
-const relationshipNodes = data.relationships.map(
-    relationship => ({
-
-        data: {
-            id: `relationship-${relationship.id}`,
-            kind: "relationship"
-        },
-
-        classes: "relationship-node"
-
-    })
-);
-
-// =========================
-// ЗВ'ЯЗКИ
-// =========================
+const relationshipNodes = data.relationships.map((relationship) => ({
+    data: {
+        id: `relationship-${relationship.id}`,
+        kind: "relationship"
+    },
+    classes: "relationship-node"
+}));
 
 const edges = [];
 
-data.relationships.forEach(
-    relationship => {
+data.relationships.forEach((relationship) => {
+    const relationshipNodeId =
+        `relationship-${relationship.id}`;
 
-        const relationshipNodeId =
-            `relationship-${relationship.id}`;
+    relationship.partners.forEach((partnerId) => {
+        edges.push({
+            data: {
+                id:
+                    `${partnerId}-${relationshipNodeId}`,
+                source: partnerId,
+                target: relationshipNodeId
+            },
+            classes: "relationship-edge"
+        });
+    });
 
-        // Партнери → вузол стосунків
-
-        relationship.partners.forEach(
-            partnerId => {
-
-                edges.push({
-
-                    data: {
-                        id:
-                            `${partnerId}-${relationshipNodeId}`,
-
-                        source:
-                            partnerId,
-
-                        target:
-                            relationshipNodeId
-                    },
-
-                    classes:
-                        "relationship-edge"
-
-                });
-
-            }
-        );
-
-        // Вузол стосунків → діти
-
-        data.characters
-            .filter(
-                character =>
-                    character.relationship ===
-                    relationship.id
-            )
-            .forEach(
-                child => {
-
-                    edges.push({
-
-                        data: {
-                            id:
-                                `${relationshipNodeId}-${child.id}`,
-
-                            source:
-                                relationshipNodeId,
-
-                            target:
-                                child.id
-                        },
-
-                        classes:
-                            "child-edge"
-
-                    });
-
-                }
-            );
-
-    }
-);
-
-// =========================
-// КОЛЬОРИ ПЕРСОНАЖІВ
-// =========================
+    data.characters
+        .filter(
+            (character) =>
+                character.relationship ===
+                relationship.id
+        )
+        .forEach((child) => {
+            edges.push({
+                data: {
+                    id:
+                        `${relationshipNodeId}-${child.id}`,
+                    source: relationshipNodeId,
+                    target: child.id
+                },
+                classes: "child-edge"
+            });
+        });
+});
 
 const nodeStyles = [];
 
-Object.entries(TYPES).forEach(
-    ([type]) => {
-
-        Object.entries(GROUPS).forEach(
-            ([group, shades]) => {
-
-                for (
-                    let power = 1;
-                    power <= 5;
-                    power++
-                ) {
-
-                    nodeStyles.push({
-
-                        selector:
-                            `node[type="${type}"]` +
-                            `[group="${group}"]` +
-                            `[power="${power}"]`,
-
-                        style: {
-
-                            "background-color":
-                                shades[power]
-
-                        }
-
-                    });
-
-                }
-
+Object.entries(TYPES).forEach(([type]) => {
+    Object.entries(GROUPS).forEach(
+        ([group, shades]) => {
+            for (
+                let power = 1;
+                power <= 5;
+                power++
+            ) {
+                nodeStyles.push({
+                    selector:
+                        `node[type="${type}"]` +
+                        `[group="${group}"]` +
+                        `[power="${power}"]`,
+                    style: {
+                        "background-color":
+                            shades[power]
+                    }
+                });
             }
-        );
-
-    }
-);
-
-// =========================
-// ГРАФ
-// =========================
+        }
+    );
+});
 
 const cy = cytoscape({
-
     container:
         document.getElementById("cy"),
 
     elements: [
-
         ...characterNodes,
         ...relationshipNodes,
         ...edges
-
     ],
 
     style: [
-
-        // ПЕРСОНАЖІ
-
         {
-
             selector:
                 'node[kind="character"]',
 
             style: {
-
-                // Базовий колір картки
-
-                "background-color":
-                    "#E8DCC5",
-
                 label:
                     "data(label)",
 
@@ -209,6 +119,9 @@ const cy = cytoscape({
 
                 height:
                     75,
+
+                "background-color":
+                    "#F3EBDD",
 
                 "border-width":
                     2,
@@ -229,25 +142,23 @@ const cy = cytoscape({
                     "center",
 
                 "text-halign":
-                    "center"
+                    "center",
 
+                "text-wrap":
+                    "wrap",
+
+                "text-max-width":
+                    145
             }
-
         },
-
-        // Кольори з config.js
 
         ...nodeStyles,
 
-        // ВУЗОЛ СТОСУНКІВ
-
         {
-
             selector:
                 ".relationship-node",
 
             style: {
-
                 label:
                     "",
 
@@ -255,52 +166,46 @@ const cy = cytoscape({
                     "ellipse",
 
                 width:
-                    8,
+                    10,
 
                 height:
-                    8,
+                    10,
 
                 "background-color":
                     "#B89B5E",
 
                 "border-width":
-                    0,
+                    1,
+
+                "border-color":
+                    "#8C6A2F",
 
                 opacity:
-                    0.75
-
+                    0.9
             }
-
         },
 
-        // ВИБРАНИЙ ПЕРСОНАЖ
-
         {
-
             selector:
                 'node[kind="character"]:selected',
 
             style: {
-
                 "border-width":
                     5,
 
                 "border-color":
-                    "#8C6A2F"
+                    "#8C6A2F",
 
+                "overlay-opacity":
+                    0
             }
-
         },
 
-        // ПРЕДКИ
-
         {
-
             selector:
                 ".ancestor",
 
             style: {
-
                 "background-color":
                     "#FFE39A",
 
@@ -309,103 +214,93 @@ const cy = cytoscape({
 
                 "border-width":
                     4
-
             }
-
         },
 
-        // УСІ ЛІНІЇ
-
         {
-
             selector:
                 "edge",
 
             style: {
-
                 width:
                     2,
 
                 "line-color":
-                    "#8F8F8F",
+                    "#AAA39A",
 
                 "curve-style":
-                    "bezier",
+                    "straight",
 
                 "target-arrow-shape":
-                    "none"
+                    "none",
 
+                opacity:
+                    0.8
             }
-
         },
 
-        // ЛІНІЇ СТОСУНКІВ
-
         {
-
             selector:
                 ".relationship-edge",
 
             style: {
-
                 width:
                     3,
 
                 "line-color":
                     "#B89B5E",
 
+                "curve-style":
+                    "straight",
+
                 "line-style":
                     "solid",
 
                 opacity:
-                    0.9
-
+                    0.95
             }
-
         },
 
-        // ЛІНІЇ ДО ДІТЕЙ
-
         {
-
             selector:
                 ".child-edge",
 
             style: {
-
                 width:
                     2,
 
                 "line-color":
-                    "#8F8F8F"
+                    "#9C958B",
 
+                "curve-style":
+                    "straight",
+
+                "line-style":
+                    "solid",
+
+                opacity:
+                    0.8
             }
-
         },
 
-        // ПІДСВІЧЕНІ ЛІНІЇ
-
         {
-
             selector:
                 "edge.ancestor",
 
             style: {
-
                 "line-color":
                     "#C28A00",
 
                 width:
-                    4
+                    4,
 
+                opacity:
+                    1
             }
-
         }
-
     ],
 
     layout: {
-
         name:
             "dagre",
 
@@ -413,46 +308,41 @@ const cy = cytoscape({
             "TB",
 
         nodeSep:
-            60,
+            85,
 
         rankSep:
-            150
+            170,
 
+        edgeSep:
+            25,
+
+        ranker:
+            "network-simplex",
+
+        animate:
+            false,
+
+        fit:
+            true,
+
+        padding:
+            80
     }
-
 });
-
-// Забороняємо рухати вузли
 
 cy.nodes().ungrabify();
 
-// Передаємо граф у graph.js
-
 setGraph(cy, data);
 
-// =========================
-// КЛІК ПО ПЕРСОНАЖУ
-// =========================
-
 cy.on(
-
     "tap",
-
     'node[kind="character"]',
-
-    event => {
-
+    (event) => {
         focusCharacter(
             event.target.id()
         );
-
     }
-
 );
-
-// =========================
-// ПОШУК
-// =========================
 
 const searchInput =
     document.getElementById(
@@ -464,113 +354,85 @@ const searchResults =
         "searchResults"
     );
 
-if (
-    searchInput &&
-    searchResults
-) {
+searchInput.addEventListener(
+    "input",
+    () => {
+        const query =
+            searchInput.value
+                .trim()
+                .toLowerCase();
 
-    searchInput.addEventListener(
+        searchResults.innerHTML = "";
 
-        "input",
-
-        () => {
-
-            const query =
-                searchInput.value
-                    .trim()
-                    .toLowerCase();
-
-            searchResults.innerHTML =
-                "";
-
-            if (query === "") {
-                return;
-            }
-
-            const matches =
-                data.characters.filter(
-                    character =>
-                        character.name
-                            .toLowerCase()
-                            .includes(query)
-                );
-
-            if (
-                matches.length === 0
-            ) {
-
-                const message =
-                    document.createElement(
-                        "div"
-                    );
-
-                message.className =
-                    "no-results";
-
-                message.textContent =
-                    "Нічого не знайдено";
-
-                searchResults.appendChild(
-                    message
-                );
-
-                return;
-
-            }
-
-            matches.forEach(
-                character => {
-
-                    const button =
-                        document.createElement(
-                            "button"
-                        );
-
-                    button.type =
-                        "button";
-
-                    button.className =
-                        "search-result";
-
-                    button.textContent =
-                        character.name;
-
-                    button.addEventListener(
-
-                        "click",
-
-                        () => {
-
-                            focusCharacter(
-                                character.id
-                            );
-
-                            searchInput.value =
-                                "";
-
-                            searchResults.innerHTML =
-                                "";
-
-                        }
-
-                    );
-
-                    searchResults.appendChild(
-                        button
-                    );
-
-                }
-            );
-
+        if (query === "") {
+            return;
         }
 
-    );
+        const matches =
+            data.characters.filter(
+                (character) =>
+                    character.name
+                        .toLowerCase()
+                        .includes(query)
+            );
 
-}
+        if (matches.length === 0) {
+            const message =
+                document.createElement(
+                    "div"
+                );
 
-// =========================
-// КНОПКИ МАСШТАБУ
-// =========================
+            message.className =
+                "no-results";
+
+            message.textContent =
+                "Нічого не знайдено";
+
+            searchResults.appendChild(
+                message
+            );
+
+            return;
+        }
+
+        matches.forEach(
+            (character) => {
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+                button.type =
+                    "button";
+
+                button.className =
+                    "search-result";
+
+                button.textContent =
+                    character.name;
+
+                button.addEventListener(
+                    "click",
+                    () => {
+                        focusCharacter(
+                            character.id
+                        );
+
+                        searchInput.value =
+                            "";
+
+                        searchResults.innerHTML =
+                            "";
+                    }
+                );
+
+                searchResults.appendChild(
+                    button
+                );
+            }
+        );
+    }
+);
 
 const zoomInButton =
     document.getElementById(
@@ -587,92 +449,51 @@ const fitButton =
         "fitButton"
     );
 
-// Наблизити
+zoomInButton.addEventListener(
+    "click",
+    () => {
+        cy.zoom({
+            level:
+                cy.zoom() * 1.2,
 
-if (zoomInButton) {
+            renderedPosition: {
+                x:
+                    cy.width() / 2,
 
-    zoomInButton.addEventListener(
+                y:
+                    cy.height() / 2
+            }
+        });
+    }
+);
 
-        "click",
+zoomOutButton.addEventListener(
+    "click",
+    () => {
+        cy.zoom({
+            level:
+                cy.zoom() / 1.2,
 
-        () => {
+            renderedPosition: {
+                x:
+                    cy.width() / 2,
 
-            cy.zoom({
+                y:
+                    cy.height() / 2
+            }
+        });
+    }
+);
 
-                level:
-                    cy.zoom() * 1.2,
-
-                renderedPosition: {
-
-                    x:
-                        cy.width() / 2,
-
-                    y:
-                        cy.height() / 2
-
-                }
-
-            });
-
-        }
-
-    );
-
+fitButton.addEventListener(
+    "click",
+    () => {
+        cy.fit(
+            cy.elements(),
+            80
+        );
+    }
+);
 }
 
-// Віддалити
-
-if (zoomOutButton) {
-
-    zoomOutButton.addEventListener(
-
-        "click",
-
-        () => {
-
-            cy.zoom({
-
-                level:
-                    cy.zoom() / 1.2,
-
-                renderedPosition: {
-
-                    x:
-                        cy.width() / 2,
-
-                    y:
-                        cy.height() / 2
-
-                }
-
-            });
-
-        }
-
-    );
-
-}
-
-// Показати все дерево
-
-if (fitButton) {
-
-    fitButton.addEventListener(
-
-        "click",
-
-        () => {
-
-            cy.fit(
-                cy.elements(),
-                60
-            );
-
-        }
-
-    );
-
-
-}
-}
 start();
