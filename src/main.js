@@ -9,7 +9,7 @@ import { setGraph, focusCharacter } from "./graph.js";
 cytoscape.use(dagre);
 
 async function start() {
-const response = await fetch("/mythology.json");
+const response = await fetch(${import.meta.env.BASE_URL}mythology.json);
 const data = await response.json();
 const characterNodes = data.characters.map((character) => ({
     data: {
