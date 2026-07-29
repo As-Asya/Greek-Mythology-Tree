@@ -1,0 +1,55 @@
+{
+  "relationships": [
+    {
+      "id": "gaia-uranus",
+      "partners": ["gaia", "uranus"]
+    }
+  ],
+
+  "characters": [
+    {
+      "id": "chaos",
+      "name": "Хаос",
+      "subtitle": "Первісна порожнеча, з якої виник світ",
+      "description": "",
+      "type": "primordial",
+      "group": "immortal",
+      "power": 5,
+      "relationship": null,
+      "consorts": []
+    },
+    {
+      "id": "gaia",
+      "name": "Гая",
+      "subtitle": "Первісна богиня Землі",
+      "description": "",
+      "type": "primordial",
+      "group": "immortal",
+      "power": 4,
+      "relationship": null,
+      "consorts": ["uranus"]
+    },
+    {
+      "id": "uranus",
+      "name": "Уран",
+      "subtitle": "Первісний бог Неба",
+      "description": "",
+      "type": "primordial",
+      "group": "immortal",
+      "power": 4,
+      "relationship": null,
+      "consorts": ["gaia"]
+    },
+    {
+      "id": "cronus",
+      "name": "Кронос",
+      "subtitle": "Наймолодший із титанів",
+      "description": "",
+      "type": "titan",
+      "group": "immortal",
+      "power": 3,
+      "relationship": "gaia-uranus",
+      "consorts": []
+    }
+  ]
+}
