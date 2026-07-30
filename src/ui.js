@@ -32,7 +32,9 @@ export function showCharacter(
 
     if (character.description) {
         html += `
-            <h3>Опис</h3>
+            <h3>
+                Опис
+            </h3>
 
             <p>
                 ${character.description}
@@ -232,11 +234,19 @@ export function showCharacter(
                 info.classList.add(
                     "info-closed"
                 );
+
+                updateControlsPosition(
+                    info
+                );
             }
         );
     }
 
     setupMobileDrag(info);
+
+    updateControlsPosition(
+        info
+    );
 }
 
 
@@ -319,11 +329,6 @@ function setupMobileDrag(info) {
 
             info.style.transform =
                 `translateY(${currentY}px)`;
-
-            updateControlsPosition(
-                info,
-                currentY
-            );
         },
         {
             passive: true
@@ -349,27 +354,24 @@ function setupMobileDrag(info) {
             info.style.transition =
                 "transform 0.25s ease";
 
+            info.style.transform =
+                "";
+
             if (shouldClose) {
                 info.classList.add(
                     "info-closed"
                 );
-
-                info.style.transform =
-                    "";
-
-                updateControlsPosition(
-                    info
-                );
             } else {
-                info.style.transform =
-                    "";
-
-                updateControlsPosition(
-                    info
+                info.classList.remove(
+                    "info-closed"
                 );
             }
 
             currentY = 0;
+
+            updateControlsPosition(
+                info
+            );
         }
     );
 
@@ -396,8 +398,8 @@ function updateControlsPosition(
     }
 
     /*
-    На ноуті CSS сам керує
-    положенням кнопок.
+    На ноуті положенням
+    керує CSS.
     */
 
     if (
@@ -410,9 +412,8 @@ function updateControlsPosition(
     }
 
     /*
-    Якщо мобільна картка
-    закрита — кнопки стоять
-    біля нижнього краю.
+    Закрита мобільна панель:
+    кнопки біля нижнього краю.
     */
 
     if (
@@ -427,8 +428,8 @@ function updateControlsPosition(
     }
 
     /*
-    Якщо картка відкрита —
-    ставимо кнопки над нею.
+    Відкрита мобільна панель:
+    кнопки над нею.
     */
 
     const panelHeight =
@@ -437,46 +438,4 @@ function updateControlsPosition(
 
     controls.style.bottom =
         `${panelHeight + 14}px`;
-
-    /*
-    На телефоні кнопки мають
-    фіксовану позицію через CSS.
-
-    JavaScript більше не змінює
-    їхнє положення.
-    */
-
-    const controls =
-        document.getElementById(
-            "controls"
-        );
-
-    if (!controls) {
-        return;
-    }
-
-    if (
-        info.classList.contains(
-            "info-closed"
-        )
-    ) {
-        controls.style.bottom =
-            "20px";
-
-        return;
-    }
-
-    const panelHeight =
-        info.offsetHeight;
-
-    const bottom =
-        Math.max(
-            20,
-            panelHeight -
-            dragAmount +
-            12
-        );
-
-    controls.style.bottom =
-        `${bottom}px`;
 }
