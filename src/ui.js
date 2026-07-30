@@ -383,7 +383,61 @@ function setupMobileDrag(info) {
 ПОЗИЦІЯ КНОПОК
 ========================= */
 
-function updateControlsPosition() {
+function updateControlsPosition(
+    info
+) {
+    const controls =
+        document.getElementById(
+            "controls"
+        );
+
+    if (!controls || !info) {
+        return;
+    }
+
+    /*
+    На ноуті CSS сам керує
+    положенням кнопок.
+    */
+
+    if (
+        window.innerWidth > 768
+    ) {
+        controls.style.bottom =
+            "";
+
+        return;
+    }
+
+    /*
+    Якщо мобільна картка
+    закрита — кнопки стоять
+    біля нижнього краю.
+    */
+
+    if (
+        info.classList.contains(
+            "info-closed"
+        )
+    ) {
+        controls.style.bottom =
+            "20px";
+
+        return;
+    }
+
+    /*
+    Якщо картка відкрита —
+    ставимо кнопки над нею.
+    */
+
+    const panelHeight =
+        info.getBoundingClientRect()
+            .height;
+
+    controls.style.bottom =
+        `${panelHeight + 14}px`;
+
     /*
     На телефоні кнопки мають
     фіксовану позицію через CSS.

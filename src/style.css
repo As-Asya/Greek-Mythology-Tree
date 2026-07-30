@@ -758,18 +758,15 @@ body {
 
     left: 12px;
 
-    top: 50%;
+    top: auto;
 
-    bottom: auto;
+    bottom: 20px;
 
-    transform:
-        translateY(-50%);
+    transform: none;
 
-    display:
-        flex;
+    display: flex;
 
-    flex-direction:
-        column;
+    flex-direction: column;
 
     gap: 7px;
 
@@ -777,7 +774,8 @@ body {
 
     padding: 0;
 
-    transition: none;
+    transition:
+        bottom 0.25s ease;
 }
 
     #controls button {
