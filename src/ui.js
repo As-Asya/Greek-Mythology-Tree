@@ -383,10 +383,15 @@ function setupMobileDrag(info) {
 ПОЗИЦІЯ КНОПОК
 ========================= */
 
-function updateControlsPosition(
-    info,
-    dragAmount = 0
-) {
+function updateControlsPosition() {
+    /*
+    На телефоні кнопки мають
+    фіксовану позицію через CSS.
+
+    JavaScript більше не змінює
+    їхнє положення.
+    */
+
     const controls =
         document.getElementById(
             "controls"
@@ -396,62 +401,28 @@ function updateControlsPosition(
         return;
     }
 
-    /* Якщо панель схована */
-
     if (
         info.classList.contains(
             "info-closed"
         )
     ) {
         controls.style.bottom =
-            "calc(16px + env(safe-area-inset-bottom))";
+            "20px";
 
         return;
     }
 
-    /*
-    Беремо реальну позицію
-    верхнього краю панелі,
-    а не її приблизну висоту.
-    */
+    const panelHeight =
+        info.offsetHeight;
 
-    const panelTop =
-        info.getBoundingClientRect().top;
-
-    /*
-    Висота екрана, яку зараз
-    реально бачить браузер.
-    */
-
-    const viewportHeight =
-        window.visualViewport
-            ? window.visualViewport.height
-            : window.innerHeight;
-
-    /*
-    Відстань від нижнього краю
-    екрана до верхнього краю панелі.
-    */
-
-    const panelBottomSpace =
-        viewportHeight -
-        panelTop +
-        12;
-
-    /*
-    Не дозволяємо кнопкам
-    опускатися нижче 16 px.
-    */
-
-    const safeBottom =
+    const bottom =
         Math.max(
-            16,
-            panelBottomSpace
+            20,
+            panelHeight -
+            dragAmount +
+            12
         );
 
     controls.style.bottom =
-        `calc(
-            ${safeBottom}px +
-            env(safe-area-inset-bottom)
-        )`;
+        `${bottom}px`;
 }
