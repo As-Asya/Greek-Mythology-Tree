@@ -396,28 +396,62 @@ function updateControlsPosition(
         return;
     }
 
+    /* Якщо панель схована */
+
     if (
         info.classList.contains(
             "info-closed"
         )
     ) {
         controls.style.bottom =
-            "20px";
+            "calc(16px + env(safe-area-inset-bottom))";
 
         return;
     }
 
-    const panelHeight =
-        info.offsetHeight;
+    /*
+    Беремо реальну позицію
+    верхнього краю панелі,
+    а не її приблизну висоту.
+    */
 
-    const bottom =
+    const panelTop =
+        info.getBoundingClientRect().top;
+
+    /*
+    Висота екрана, яку зараз
+    реально бачить браузер.
+    */
+
+    const viewportHeight =
+        window.visualViewport
+            ? window.visualViewport.height
+            : window.innerHeight;
+
+    /*
+    Відстань від нижнього краю
+    екрана до верхнього краю панелі.
+    */
+
+    const panelBottomSpace =
+        viewportHeight -
+        panelTop +
+        12;
+
+    /*
+    Не дозволяємо кнопкам
+    опускатися нижче 16 px.
+    */
+
+    const safeBottom =
         Math.max(
-            20,
-            panelHeight -
-            dragAmount +
-            12
+            16,
+            panelBottomSpace
         );
 
     controls.style.bottom =
-        `${bottom}px`;
+        `calc(
+            ${safeBottom}px +
+            env(safe-area-inset-bottom)
+        )`;
 }
