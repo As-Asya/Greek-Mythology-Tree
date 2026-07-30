@@ -3,105 +3,206 @@ import { showCharacter } from "./ui.js";
 let cy = null;
 let data = null;
 
-export function setGraph(graph, graphData) {
+/* =========================
+ЗБЕРІГАЄМО ГРАФ І ДАНІ
+========================= */
 
+export function setGraph(
+    graph,
+    graphData
+) {
     cy = graph;
     data = graphData;
-
 }
+
+/* =========================
+ПІДСВІЧУВАННЯ ПРЕДКІВ
+========================= */
 
 function highlightAncestors(node) {
-
-    if (node.hasClass("ancestor")) {
+    if (!node || node.empty()) {
         return;
     }
 
-    node.addClass("ancestor");
-
-    // Якщо це персонаж —
-    // переходимо до вузла його стосунків
-
-    if (node.data("kind") === "character") {
-
-        const character = data.characters.find(
-            character => character.id === node.id()
-        );
-
-        if (!character?.relationship) {
-            return;
-        }
-
-        const relationshipNode = cy.getElementById(
-            `relationship-${character.relationship}`
-        );
-
-        if (relationshipNode.empty()) {
-            return;
-        }
-
-        const parentEdge = relationshipNode
-            .outgoers("edge")
-            .filter(
-                edge => edge.target().id() === node.id()
-            );
-
-        parentEdge.addClass("ancestor");
-
-        highlightAncestors(relationshipNode);
-
+    if (
+        node.hasClass(
+            "ancestor"
+        )
+    ) {
         return;
-
     }
 
-    // Якщо це вузол стосунків —
-    // переходимо до обох партнерів
-
-    if (node.data("kind") === "relationship") {
-
-        node.incomers("edge").forEach(edge => {
-
-            edge.addClass("ancestor");
-
-            highlightAncestors(edge.source());
-
-        });
-
-    }
-
-}
-
-export function focusCharacter(id) {
-
-    if (!cy || !data) return;
-
-    const node = cy.getElementById(id);
-
-    if (node.empty()) return;
-
-    // Прибираємо старе підсвічування
-    cy.elements().removeClass("ancestor");
-
-    // Прибираємо старе виділення
-    cy.elements().unselect();
-
-    // Виділяємо нового персонажа
-    node.select();
-
-    // Підсвічуємо його предків
-    highlightAncestors(node);
-
-    // ВАЖЛИВО:
-    // Тут більше немає cy.animate()
-    // Граф не буде автоматично рухатися
-
-    const character = data.characters.find(
-        character => character.id === id
+    node.addClass(
+        "ancestor"
     );
 
-    if (character) {
+    /*
+    Якщо це персонаж,
+    шукаємо вузол стосунків,
+    через який він походить.
+    */
 
-        showCharacter(character, data);
+    if (
+        node.data("kind") ===
+        "character"
+    ) {
+        const character =
+            data.characters.find(
+                (item) =>
+                    item.id ===
+                    node.id()
+            );
 
+        if (
+            !character ||
+            !character.relationship
+        ) {
+            return;
+        }
+
+        const relationshipNode =
+            cy.getElementById(
+                `relationship-${character.relationship}`
+            );
+
+        if (
+            relationshipNode.empty()
+        ) {
+            return;
+        }
+
+        /*
+        Знаходимо лінію
+        від вузла стосунків
+        до персонажа.
+        */
+
+        const childEdge =
+            relationshipNode
+                .outgoers("edge")
+                .filter(
+                    (edge) =>
+                        edge.target().id() ===
+                        node.id()
+                );
+
+        childEdge.addClass(
+            "ancestor"
+        );
+
+        highlightAncestors(
+            relationshipNode
+        );
+
+        return;
     }
 
+    /*
+    Якщо це вузол стосунків,
+    переходимо до обох
+    партнерів.
+    */
+
+    if (
+        node.data("kind") ===
+        "relationship"
+    ) {
+        node
+            .incomers("edge")
+            .forEach(
+                (edge) => {
+                    edge.addClass(
+                        "ancestor"
+                    );
+
+                    highlightAncestors(
+                        edge.source()
+                    );
+                }
+            );
+    }
+}
+
+/* =========================
+ВИБІР ПЕРСОНАЖА
+========================= */
+
+export function focusCharacter(id) {
+    if (
+        !cy ||
+        !data
+    ) {
+        return;
+    }
+
+    const node =
+        cy.getElementById(id);
+
+    if (
+        !node ||
+        node.empty()
+    ) {
+        return;
+    }
+
+    /*
+    Прибираємо попереднє
+    підсвічування.
+    */
+
+    cy.elements().removeClass(
+        "ancestor"
+    );
+
+    /*
+    Прибираємо попередній
+    вибір.
+    */
+
+    cy.elements().unselect();
+
+    /*
+    Виділяємо персонажа.
+    */
+
+    node.select();
+
+    /*
+    Підсвічуємо його
+    предків.
+    */
+
+    highlightAncestors(
+        node
+    );
+
+    /*
+    Шукаємо дані
+    вибраного персонажа.
+    */
+
+    const character =
+        data.characters.find(
+            (item) =>
+                item.id === id
+        );
+
+    if (!character) {
+        return;
+    }
+
+    /*
+    Передаємо focusCharacter
+    у UI як функцію.
+    
+    Завдяки цьому ui.js
+    не імпортує graph.js,
+    і циклічного імпорту немає.
+    */
+
+    showCharacter(
+        character,
+        data,
+        focusCharacter
+    );
 }

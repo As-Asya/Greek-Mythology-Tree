@@ -1,93 +1,102 @@
 <!doctype html>
-
 <html lang="uk">
-
 <head>
+    <meta charset="UTF-8">
 
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<meta charset="UTF-8" />
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-/>
-
-<title>Greek Mythology Tree</title>
-
-
+    <title>Greek Mythology Tree</title>
 </head>
 
 <body>
 
+    <div id="layout">
 
-<div id="layout">
+        <!-- Граф -->
+        <div id="cy"></div>
 
-    <!-- Граф -->
-    <div id="cy"></div>
+        <!-- Пошук персонажів -->
+        <div id="search">
 
-    <!-- Пошук персонажів -->
-    <div id="search">
+            <input
+                id="searchInput"
+                type="search"
+                placeholder="Знайти персонажа..."
+                autocomplete="off"
+            >
 
-        <input
-            id="searchInput"
-            type="search"
-            placeholder="Знайти персонажа..."
-            autocomplete="off"
-        />
+            <div id="searchResults"></div>
 
-        <div id="searchResults"></div>
+        </div>
+
+        <!-- Керування масштабом -->
+        <div id="controls">
+
+            <button
+                id="zoomOutButton"
+                title="Віддалити"
+                type="button"
+            >
+                −
+            </button>
+
+            <button
+                id="zoomInButton"
+                title="Наблизити"
+                type="button"
+            >
+                +
+            </button>
+
+            <button
+                id="fitButton"
+                title="Показати все дерево"
+                type="button"
+            >
+                ⌂
+            </button>
+
+        </div>
+
+        <!-- Інформаційна картка -->
+        <aside id="info">
+
+            <div
+                id="infoHandle"
+                aria-hidden="true"
+            ></div>
+
+            <button
+                id="closeInfoButton"
+                type="button"
+                aria-label="Закрити панель"
+                title="Закрити панель"
+            >
+                ×
+            </button>
+
+            <div id="infoContent">
+
+                <h2>Оберіть персонажа</h2>
+
+                <p>
+                    Натисніть на будь-якого персонажа
+                    на дереві
+                </p>
+
+            </div>
+
+        </aside>
 
     </div>
 
-    <!-- Керування масштабом -->
-    <div id="controls">
-
-        <button
-            id="zoomOutButton"
-            title="Віддалити"
-            type="button"
-        >
-            −
-        </button>
-
-        <button
-            id="zoomInButton"
-            title="Наблизити"
-            type="button"
-        >
-            +
-        </button>
-
-        <button
-            id="fitButton"
-            title="Показати все дерево"
-            type="button"
-        >
-            ⌂
-        </button>
-
-    </div>
-
-    <!-- Бокова картка -->
-    <aside id="info">
-
-        <h2>Оберіть персонажа</h2>
-
-        <p>
-            Натисніть на будь-якого персонажа
-            на дереві
-        </p>
-
-    </aside>
-
-</div>
-
-<script
-    type="module"
-    src="/src/main.js"
-></script>
-```
+    <script
+        type="module"
+        src="/src/main.js"
+    ></script>
 
 </body>
-
 </html>

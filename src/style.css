@@ -2,200 +2,285 @@ html,
 body {
     margin: 0;
 
-width: 100%;
+    width: 100%;
 
-height: 100%;
+    height: 100%;
 
-overflow: hidden;
+    overflow: hidden;
 
-font-family:
-    Georgia,
-    serif;
+    font-family:
+        Georgia,
+        serif;
 
-background:
-    #F4F0E7;
+    background:
+        #F4F0E7;
 
-color:
-    #302B24;
-    }
+    color:
+        #302B24;
+}
+
+/* =========================
+ОСНОВНИЙ МАКЕТ
+========================= */
 
 #layout {
     display:
-    flex;
+        flex;
 
-width:
-    100vw;
+    width:
+        100vw;
 
-height:
-    100vh;
+    height:
+        100vh;
 
-position:
-    relative;
+    position:
+        relative;
 
-background:
-    #F4F0E7;
-    }
+    background:
+        #F4F0E7;
+}
 
 #cy {
     flex:
-    1;
+        1;
 
-min-width:
-    0;
+    min-width:
+        0;
 
-height:
-    100vh;
+    height:
+        100vh;
 
-position:
-    relative;
+    position:
+        relative;
 
-background:
-    radial-gradient(
-        circle at 50% 40%,
-        #FBF8F1 0%,
-        #F4F0E7 68%,
-        #EEE8DC 100%
-    );
-    }
+    background:
+        radial-gradient(
+            circle at 50% 40%,
+            #FBF8F1 0%,
+            #F4F0E7 68%,
+            #EEE8DC 100%
+        );
+}
 
 /* =========================
-ПРАВА ПАНЕЛЬ
+ПРАВА ІНФОРМАЦІЙНА ПАНЕЛЬ
 ========================= */
 
 #info {
     width:
-    340px;
+        340px;
 
-box-sizing:
-    border-box;
+    box-sizing:
+        border-box;
 
-padding:
-    34px 30px;
+    padding:
+        34px 30px;
 
-background:
-    rgba(
-        252,
-        250,
-        245,
-        0.96
-    );
+    position:
+        relative;
 
-border-left:
-    1px solid
-    #DED5C4;
+    background:
+        rgba(
+            252,
+            250,
+            245,
+            0.96
+        );
 
-box-shadow:
-    -10px 0 30px
-    rgba(
-        83,
-        68,
-        43,
-        0.06
-    );
+    border-left:
+        1px solid
+        #DED5C4;
 
-overflow-y:
-    auto;
-    }
+    box-shadow:
+        -10px 0 30px
+        rgba(
+            83,
+            68,
+            43,
+            0.06
+        );
+
+    overflow-y:
+        auto;
+
+    z-index:
+        200;
+}
+
+/* Повністю прихована панель */
+
+#info.info-closed {
+    display:
+        none;
+}
+
+/* =========================
+ЗАГОЛОВКИ ТА ТЕКСТ
+========================= */
 
 #info h2 {
     margin:
-    0 0 10px;
+        0 0 10px;
 
-padding-bottom:
-    14px;
+    padding-bottom:
+        14px;
 
-border-bottom:
-    1px solid
-    #E4DCCF;
+    padding-right:
+        38px;
 
-color:
-    #302B24;
+    border-bottom:
+        1px solid
+        #E4DCCF;
 
-font-size:
-    28px;
+    color:
+        #302B24;
 
-line-height:
-    1.15;
-    }
+    font-size:
+        28px;
+
+    line-height:
+        1.15;
+}
 
 #info h3 {
     margin:
-    27px 0 10px;
+        27px 0 10px;
 
-color:
-    #665235;
+    color:
+        #665235;
 
-font-size:
-    18px;
-    }
+    font-size:
+        18px;
+}
 
 #info p {
     margin:
-    0;
+        0;
 
-line-height:
-    1.65;
+    line-height:
+        1.65;
 
-color:
-    #5B554C;
-    }
+    color:
+        #5B554C;
+}
 
 #info ul {
     margin:
-    10px 0 0;
+        10px 0 0;
 
-padding-left:
-    21px;
-    }
+    padding-left:
+        21px;
+}
 
 #info li {
     margin-bottom:
-    9px;
+        9px;
 
-color:
-    #5B554C;
-    }
+    color:
+        #5B554C;
+}
 
 /* =========================
-ПОСИЛАННЯ ПЕРСОНАЖІВ
+ПОСИЛАННЯ НА ПЕРСОНАЖІВ
 ========================= */
 
 .person-link {
     padding:
-    0;
+        0;
 
-border:
-    none;
+    border:
+        none;
 
-background:
-    transparent;
+    background:
+        transparent;
 
-color:
-    #6B522B;
+    color:
+        #6B522B;
 
-font:
-    inherit;
+    font:
+        inherit;
 
-cursor:
-    pointer;
+    cursor:
+        pointer;
 
-text-decoration:
-    underline;
+    text-decoration:
+        underline;
 
-text-decoration-color:
-    #CBB88E;
+    text-decoration-color:
+        #CBB88E;
 
-text-underline-offset:
-    3px;
+    text-underline-offset:
+        3px;
 
-transition:
-    color 0.18s ease;
-    }
+    transition:
+        color 0.18s ease;
+}
 
 .person-link:hover {
     color:
-    #A06F1B;
-    }
+        #A06F1B;
+}
+
+/* =========================
+КНОПКА ЗАКРИТТЯ
+========================= */
+
+#closeInfoButton {
+    position:
+        absolute;
+
+    top:
+        12px;
+
+    right:
+        14px;
+
+    width:
+        34px;
+
+    height:
+        34px;
+
+    padding:
+        0;
+
+    border:
+        1px solid
+        #DED5C4;
+
+    border-radius:
+        50%;
+
+    background:
+        #FFFFFF;
+
+    color:
+        #5B554C;
+
+    font-size:
+        24px;
+
+    line-height:
+        1;
+
+    cursor:
+        pointer;
+
+    z-index:
+        300;
+
+    transition:
+        background 0.18s ease,
+        transform 0.18s ease;
+}
+
+#closeInfoButton:hover {
+    background:
+        #F8F0E0;
+
+    transform:
+        scale(1.05);
+}
 
 /* =========================
 КНОПКИ МАСШТАБУ
@@ -203,94 +288,97 @@ transition:
 
 #controls {
     position:
-    absolute;
+        absolute;
 
-left:
-    20px;
+    left:
+        20px;
 
-bottom:
-    20px;
+    bottom:
+        20px;
 
-z-index:
-    100;
+    z-index:
+        150;
 
-display:
-    flex;
+    display:
+        flex;
 
-flex-direction:
-    column;
+    flex-direction:
+        column;
 
-gap:
-    9px;
-    }
+    gap:
+        9px;
+}
 
 #controls button {
     width:
-    46px;
+        46px;
 
-height:
-    46px;
+    height:
+        46px;
 
-border:
-    1px solid
-    #E2D9C9;
+    padding:
+        0;
 
-border-radius:
-    13px;
+    border:
+        1px solid
+        #E2D9C9;
 
-background:
-    rgba(
-        255,
-        255,
-        255,
-        0.94
-    );
+    border-radius:
+        13px;
 
-color:
-    #4C402D;
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.94
+        );
 
-box-shadow:
-    0 5px 16px
-    rgba(
-        64,
-        52,
-        33,
-        0.13
-    );
+    color:
+        #4C402D;
 
-font-size:
-    21px;
+    box-shadow:
+        0 5px 16px
+        rgba(
+            64,
+            52,
+            33,
+            0.13
+        );
 
-cursor:
-    pointer;
+    font-size:
+        21px;
 
-transition:
-    transform 0.18s ease,
-    background 0.18s ease,
-    box-shadow 0.18s ease;
-    }
+    cursor:
+        pointer;
+
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
 
 #controls button:hover {
     transform:
-    translateY(-2px);
+        translateY(-2px);
 
-background:
-    #FFF9EB;
+    background:
+        #FFF9EB;
 
-box-shadow:
-    0 8px 20px
-    rgba(
-        64,
-        52,
-        33,
-        0.17
-    );
-    }
+    box-shadow:
+        0 8px 20px
+        rgba(
+            64,
+            52,
+            33,
+            0.17
+        );
+}
 
 #controls button:active {
     transform:
-    translateY(0);
-    }
+        translateY(0);
+}
 
 /* =========================
 ПОШУК
@@ -298,87 +386,87 @@ box-shadow:
 
 #search {
     position:
-    absolute;
+        absolute;
 
-top:
-    20px;
+    top:
+        20px;
 
-left:
-    20px;
+    left:
+        20px;
 
-z-index:
-    100;
+    z-index:
+        250;
 
-width:
-    250px;
-    }
+    width:
+        250px;
+}
 
 #searchInput {
     width:
-    100%;
+        100%;
 
-box-sizing:
-    border-box;
+    box-sizing:
+        border-box;
 
-padding:
-    13px 15px;
+    padding:
+        13px 15px;
 
-border:
-    1px solid
-    #DDD3C1;
+    border:
+        1px solid
+        #DDD3C1;
 
-border-radius:
-    13px;
+    border-radius:
+        13px;
 
-outline:
-    none;
+    outline:
+        none;
 
-background:
-    rgba(
-        255,
-        255,
-        255,
-        0.96
-    );
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.96
+        );
 
-color:
-    #302B24;
+    color:
+        #302B24;
 
-font:
-    inherit;
+    font:
+        inherit;
 
-box-shadow:
-    0 5px 16px
-    rgba(
-        64,
-        52,
-        33,
-        0.12
-    );
+    box-shadow:
+        0 5px 16px
+        rgba(
+            64,
+            52,
+            33,
+            0.12
+        );
 
-transition:
-    border-color 0.18s ease,
-    box-shadow 0.18s ease;
-    }
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
 
 #searchInput::placeholder {
     color:
-    #91897E;
-    }
+        #91897E;
+}
 
 #searchInput:focus {
     border-color:
-    #B99756;
+        #B99756;
 
-box-shadow:
-    0 6px 19px
-    rgba(
-        116,
-        88,
-        39,
-        0.16
-    );
-    }
+    box-shadow:
+        0 6px 19px
+        rgba(
+            116,
+            88,
+            39,
+            0.16
+        );
+}
 
 /* =========================
 РЕЗУЛЬТАТИ ПОШУКУ
@@ -386,369 +474,330 @@ box-shadow:
 
 #searchResults {
     width:
-    100%;
+        100%;
 
-max-height:
-    300px;
+    max-height:
+        300px;
 
-overflow-y:
-    auto;
+    overflow-y:
+        auto;
 
-box-sizing:
-    border-box;
+    box-sizing:
+        border-box;
 
-margin-top:
-    6px;
+    margin-top:
+        6px;
 
-background:
-    rgba(
-        255,
-        255,
-        255,
-        0.98
-    );
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.98
+        );
 
-border:
-    1px solid
-    #E2D9C9;
+    border:
+        1px solid
+        #E2D9C9;
 
-border-radius:
-    13px;
+    border-radius:
+        13px;
 
-box-shadow:
-    0 10px 25px
-    rgba(
-        64,
-        52,
-        33,
-        0.16
-    );
-    }
+    box-shadow:
+        0 10px 25px
+        rgba(
+            64,
+            52,
+            33,
+            0.16
+        );
+}
 
 #searchResults:empty {
     display:
-    none;
-    }
+        none;
+}
 
 .search-result {
     display:
-    block;
+        block;
 
-width:
-    100%;
+    width:
+        100%;
 
-padding:
-    12px 15px;
+    padding:
+        12px 15px;
 
-border:
-    none;
+    border:
+        none;
 
-border-bottom:
-    1px solid
-    #EEE7DA;
+    border-bottom:
+        1px solid
+        #EEE7DA;
 
-background:
-    transparent;
+    background:
+        transparent;
 
-color:
-    #3D372F;
+    color:
+        #3D372F;
 
-font:
-    inherit;
+    font:
+        inherit;
 
-text-align:
-    left;
+    text-align:
+        left;
 
-cursor:
-    pointer;
+    cursor:
+        pointer;
 
-transition:
-    background 0.15s ease,
-    color 0.15s ease;
-    }
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
 
 .search-result:last-child {
     border-bottom:
-    none;
-    }
+        none;
+}
 
 .search-result:hover {
     background:
-    #F8F0E0;
+        #F8F0E0;
 
-color:
-    #76531D;
-    }
+    color:
+        #76531D;
+}
 
 .no-results {
     padding:
-    13px 15px;
+        13px 15px;
 
-color:
-    #827A70;
+    color:
+        #827A70;
 
-text-align:
-    center;
+    text-align:
+        center;
+}
+
+/* =========================
+МОБІЛЬНА ВЕРСІЯ
+========================= */
+
+@media (max-width: 768px) {
+
+    #layout {
+        display:
+            block;
+
+        width:
+            100vw;
+
+        height:
+            100vh;
     }
-    @media (max-width: 768px) {
-        html,
-body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
 
-#layout {
-    display: block;
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-}
+    #cy {
+        width:
+            100%;
 
-#cy {
-    width: 100%;
-    height: 100vh;
-    min-width: 0;
-}
+        height:
+            100vh;
+    }
 
-/* Нижня панель з інформацією */
+    /* Нижня панель */
 
-#info {
-    position: absolute;
+    #info {
+        position:
+            fixed;
 
-    left: 0;
-    right: 0;
-    bottom: 0;
+        left:
+            0;
 
-    width: 100%;
-    max-height: 38vh;
+        right:
+            0;
 
-    box-sizing: border-box;
+        bottom:
+            0;
 
-    padding: 22px 22px 28px;
+        width:
+            100%;
 
-    border-left: none;
+        max-height:
+            38vh;
 
-    border-top:
-        1px solid
-        #DED5C4;
+        box-sizing:
+            border-box;
 
-    border-radius:
-        22px 22px 0 0;
+        padding:
+            22px 22px 28px;
 
-    background:
-        rgba(
-            252,
-            250,
-            245,
-            0.98
-        );
+        border-left:
+            none;
 
-    box-shadow:
-        0 -8px 28px
-        rgba(
-            64,
-            52,
-            33,
-            0.14
-        );
+        border-top:
+            1px solid
+            #DED5C4;
 
-    overflow-y: auto;
+        border-radius:
+            22px 22px 0 0;
 
-    z-index: 200;
-}
+        background:
+            rgba(
+                252,
+                250,
+                245,
+                0.98
+            );
 
-#info h2 {
-    font-size: 24px;
+        box-shadow:
+            0 -8px 28px
+            rgba(
+                64,
+                52,
+                33,
+                0.14
+            );
 
-    padding-bottom: 10px;
+        overflow-y:
+            auto;
 
-    margin-bottom: 8px;
-}
+        z-index:
+            200;
+    }
 
-#info h3 {
-    margin-top: 20px;
+    /* Якщо панель закрита */
 
-    font-size: 17px;
-}
+    #info.info-closed {
+        display:
+            none;
+    }
 
-#info p {
-    line-height: 1.55;
+    #info h2 {
+        margin:
+            0 0 8px;
 
-    font-size: 15px;
-}
+        padding-bottom:
+            10px;
 
-#info li {
-    font-size: 15px;
-}
+        padding-right:
+            40px;
 
-/* Пошук */
+        font-size:
+            24px;
+    }
 
-#search {
-    top: 12px;
+    #info h3 {
+        margin-top:
+            20px;
+
+        font-size:
+            17px;
+    }
+
+    #info p,
+    #info li {
+        font-size:
+            15px;
+
+        line-height:
+            1.55;
+    }
+
+    /* Пошук */
+
+    #search {
+        top:
+            12px;
+
+        left:
+            12px;
+
+        width:
+            calc(
+                100vw - 24px
+            );
+    }
+
+    #searchInput {
+        padding:
+            12px 14px;
+
+        border-radius:
+            12px;
+
+        font-size:
+            16px;
+    }
+
+    #searchResults {
+        max-height:
+            220px;
+
+        margin-top:
+            5px;
+    }
+
+    .search-result {
+        padding:
+            12px 14px;
+
+        font-size:
+            16px;
+    }
+
+    /*
+    Кнопки масштабу.
+
+    Вони не прив’язані
+    до 38vh, тому не
+    стрибають надто високо.
+    */
+
+   #controls {
     left: 12px;
 
-    width:
-        calc(
-            100vw - 24px
-        );
+    bottom: 20px;
+
+    gap: 7px;
+
+    z-index: 250;
+
+    transition:
+        bottom 0.25s ease;
 }
 
-#searchInput {
-    padding:
-        12px 14px;
+    #controls button {
+        width:
+            42px;
 
-    border-radius:
-        12px;
+        height:
+            42px;
 
-    font-size:
-        16px;
-}
+        border-radius:
+            12px;
 
-#searchResults {
-    max-height:
-        220px;
+        font-size:
+            19px;
+    }
 
-    margin-top:
-        5px;
-}
+    /* Кнопка закриття */
 
-.search-result {
-    padding:
-        12px 14px;
+    #closeInfoButton {
+        top:
+            10px;
 
-    font-size:
-        16px;
-}
+        right:
+            12px;
 
-/* Кнопки масштабу */
+        width:
+            34px;
 
-#controls {
-    left:
-        12px;
-
-    bottom:
-        calc(
-            38vh + 14px
-        );
-
-    gap:
-        7px;
-}
-
-#controls button {
-    width:
-        42px;
-
-    height:
-        42px;
-
-    border-radius:
-        12px;
-
-    font-size:
-        19px;
-}
+        height:
+            34px;
+    }
 }
 @media (max-width: 768px) {
-    #layout {
-    display: block;
-}
-
-#cy {
-    width: 100%;
-    height: 100vh;
-}
-
-#info {
-    position: fixed;
-
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    width: 100%;
-    max-height: 38vh;
-
-    padding: 22px 22px 28px;
-
-    box-sizing: border-box;
-
-    border-left: none;
-
-    border-top:
-        1px solid
-        #DED5C4;
-
-    border-radius:
-        22px 22px 0 0;
-
-    background:
-        rgba(
-            252,
-            250,
-            245,
-            0.98
-        );
-
-    box-shadow:
-        0 -8px 28px
-        rgba(
-            64,
-            52,
-            33,
-            0.14
-        );
-
-    overflow-y: auto;
-
-    z-index: 200;
-}
-
-#info h2 {
-    font-size: 24px;
-}
-
-#info h3 {
-    font-size: 17px;
-}
-
-#info p,
-#info li {
-    font-size: 15px;
-}
-
-#search {
-    top: 12px;
-    left: 12px;
-
-    width:
-        calc(
-            100vw - 24px
-        );
-}
-
-#searchInput {
-    font-size: 16px;
-}
-
-#searchResults {
-    max-height: 220px;
-}
-
-#controls {
-    left: 12px;
-
-    bottom:
-        calc(
-            38vh + 14px
-        );
-}
-
-#controls button {
-    width: 42px;
-    height: 42px;
-}
-
-
+    #closeInfoButton {
+        display: none;
+    }
 }
