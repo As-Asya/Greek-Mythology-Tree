@@ -199,17 +199,11 @@ async function start() {
         container:
             document.getElementById("cy"),
 
-
         elements: [
-
             ...characterNodes,
-
             ...relationshipNodes,
-
             ...edges
-
         ],
-
 
         style: [
 
@@ -493,7 +487,7 @@ async function start() {
     cy.nodes().ungrabify();
 
 
-    /* Передаємо граф в graph.js */
+    /* Передаємо граф у graph.js */
 
     setGraph(
         cy,
@@ -542,15 +536,12 @@ async function start() {
                     .trim()
                     .toLowerCase();
 
-
             searchResults.innerHTML =
                 "";
-
 
             if (query === "") {
                 return;
             }
-
 
             const matches =
                 data.characters.filter(
@@ -559,7 +550,6 @@ async function start() {
                             .toLowerCase()
                             .includes(query)
                 );
-
 
             if (matches.length === 0) {
 
@@ -582,7 +572,6 @@ async function start() {
 
             }
 
-
             matches.forEach(
                 (character) => {
 
@@ -600,7 +589,6 @@ async function start() {
                     button.textContent =
                         character.name;
 
-
                     button.addEventListener(
                         "click",
                         () => {
@@ -617,7 +605,6 @@ async function start() {
 
                         }
                     );
-
 
                     searchResults.appendChild(
                         button
@@ -714,7 +701,7 @@ async function start() {
 
 
     /* =========================
-    ПОЧАТКОВА КНОПКА ×
+    ПОЧАТКОВА ПАНЕЛЬ
     ========================= */
 
     const info =
@@ -727,6 +714,63 @@ async function start() {
             "closeInfoButton"
         );
 
+
+    /*
+    На телефоні відразу ставимо
+    кнопки над початковою панеллю.
+    */
+
+    function updateInitialControlsPosition() {
+
+        if (
+            !info ||
+            window.innerWidth > 768
+        ) {
+            return;
+        }
+
+        const controls =
+            document.getElementById(
+                "controls"
+            );
+
+        if (!controls) {
+            return;
+        }
+
+        const panelHeight =
+            info.getBoundingClientRect()
+                .height;
+
+        controls.style.bottom =
+            `${panelHeight + 14}px`;
+
+    }
+
+
+    /*
+    Чекаємо, поки браузер
+    повністю розрахує висоту
+    початкової панелі.
+    */
+
+    requestAnimationFrame(
+        updateInitialControlsPosition
+    );
+
+
+    /*
+    Перерахунок після повороту
+    телефона або зміни розміру.
+    */
+
+    window.addEventListener(
+        "resize",
+        updateInitialControlsPosition
+    );
+
+
+    /* Закриття початкової панелі */
 
     if (
         info &&
@@ -741,6 +785,19 @@ async function start() {
                     "info-closed"
                 );
 
+                const controls =
+                    document.getElementById(
+                        "controls"
+                    );
+
+                if (
+                    controls &&
+                    window.innerWidth <= 768
+                ) {
+                    controls.style.bottom =
+                        "20px";
+                }
+
             }
         );
 
@@ -750,7 +807,7 @@ async function start() {
 
 
 /* =========================
-ЗАПУСК І ОБРОБКА ПОМИЛОК
+ЗАПУСК
 ========================= */
 
 start().catch(
