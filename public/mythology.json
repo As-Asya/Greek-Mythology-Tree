@@ -1,13 +1,22 @@
 {
   "relationships": [
     {
-      "id": "gaia-uranus",
-      "partners": ["gaia", "uranus"]
+      "id": "gaia",
+      "partners": ["gaia"]
     },
     {
       "id": "chaos",
       "partners": ["chaos"]
     },
+    {
+      "id": "Nyx",
+      "partners": ["Nyx"]
+    },
+    {
+      "id": "gaia-uranus",
+      "partners": ["gaia", "uranus"]
+    },
+    
     {
       "id": "gaia-chaos",
       "partners": ["gaia", "chaos"]
@@ -15,8 +24,18 @@
     {
       "id": "Nyx-Erebus",
       "partners": ["Nyx", "Erebus"]
+    },
+    {
+      "id": "Aether-Hemera",
+      "partners": ["Aether", "Hemera"]
     }
+    
   ],
+  
+
+
+
+
 
   "characters": [
     {
@@ -36,7 +55,7 @@
       "consorts": ["uranus"]
     },
     {
-      "id": "uranus",
+      "id": "Uranus",
       "name": "Уран",
       "subtitle": "Первісне божнство неба",
       "description": "",
@@ -82,6 +101,38 @@
       "description": "",
       "relationship": "Nyx-Erebus",
       "consorts": ["Hemera"]
+    },
+      {
+      "id": "Pontus",
+      "name": "Понт",
+      "subtitle": "Первісне божество і уособлення моря",
+      "description": "",
+      "relationship": "gaia",
+      "consorts": [""]
+    },
+     {
+      "id": "Charon",
+      "name": "Харон",
+      "subtitle": "Перевізник померлих у царство Аїда",
+      "description": "",
+      "relationship": "Nyx-Erebus",
+      "consorts": [""]
+    },
+    {
+      "id": "Moros",
+      "name": "Морос",
+      "subtitle": "Бог і уособлення неминучої загибелі",
+      "description": "",
+      "relationship": "Nyx",
+      "consorts": [""]
+    },
+    {
+      "id": "Thalassa",
+      "name": "Таласса",
+      "subtitle": "Первісна богиня моря",
+      "description": "",
+      "relationship": "Aether-Hemera",
+      "consorts": [""]
     },
     {
       "id": "cronus",
