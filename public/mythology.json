@@ -12,6 +12,10 @@
       "id": "Nyx",
       "partners": ["Nyx"]
     },
+     {
+      "id": "Hypnos",
+      "partners": ["Hypnos"]
+    },
     {
       "id": "Gaia-Uranus",
       "partners": ["Gaia", "Uranus"]
@@ -52,7 +56,7 @@
       "subtitle": "Первісна богиня землі",
       "description": "",
       "relationship": "Chaos",
-      "consorts": ["Uranus"]
+      "consorts": [""]
     },
     {
       "id": "Uranus",
@@ -60,7 +64,7 @@
       "subtitle": "Первісне божнство неба",
       "description": "",
       "relationship": "Gaia-Chaos",
-      "consorts": ["Gaia"]
+      "consorts": [""]
     },
       {
       "id": "Nyx",
@@ -92,7 +96,7 @@
       "subtitle": "Первісна богиня дня",
       "description": "",
       "relationship": "Nyx-Erebus",
-      "consorts": ["Aether"]
+      "consorts": [""]
     },
     {
       "id": "Aether",
@@ -100,7 +104,7 @@
       "subtitle": "Первісне божество найвищого шару повітря, яким дихають боги",
       "description": "",
       "relationship": "Nyx-Erebus",
-      "consorts": ["Hemera"]
+      "consorts": [""]
     },
       {
       "id": "Pontus",
@@ -134,10 +138,138 @@
       "relationship": "Aether-Hemera",
       "consorts": [""]
     },
+     {
+      "id": "Hypnos",
+      "name": "Гіпнос",
+      "subtitle": "Бог сну",
+      "description": "",
+      "relationship": "Nyx-Erebus",
+      "consorts": [""]
+    },
+     {
+      "id": "Thanatos",
+      "name": "Танатос",
+      "subtitle": "Бог смерті",
+      "description": "",
+      "relationship": "Nyx-Erebus",
+      "consorts": [""]
+    },
+     {
+      "id": "Phobetor",
+      "name": "Фобетор",
+      "subtitle": "Бог сновидінь",
+      "description": "Також відомий як Ікел. З'являвся людям уві сні у вигляді птахів, звірів та зміїв",
+      "relationship": "Hypnos",
+      "consorts": [""]
+    },
+     {
+      "id": "Morpheus",
+      "name": "Морфей",
+      "subtitle": "Бог сновидінь",
+      "description": "З'являвся людям уві сні в людських образах",
+      "relationship": "Hypnos",
+      "consorts": [""]
+    },
     {
-      "id": "cronus",
+      "id": "Phantasos",
+      "name": "Фантас",
+      "subtitle": "Бог сновидінь",
+      "description": "З'являвся людям уві сні у вигляді землі, води, дерев, каміння та інших неживих предметів",
+      "relationship": "Hypnos",
+      "consorts": [""]
+    },
+    {
+      "id": "Сronus",
       "name": "Кронос",
-      "subtitle": "Наймолодший із титанів",
+      "subtitle": "Титан. Персоніфікація часу",
+      "description": "Бог сівби і жнив, початку і кінця",
+      "relationship": "Gaia-Uranus",
+      "consorts": []
+    },
+      {
+      "id": "Oceanus",
+      "name": "Океан",
+      "subtitle": "Титан. Уособлення морів і водної стихії",
+      "description": "",
+      "relationship": "Gaia-Uranus",
+      "consorts": []
+    },
+      {
+      "id": "Coeus",
+      "name": "Кей",
+      "subtitle": "Титан. Бог розуму",
+      "description": "",
+      "relationship": "Gaia-Uranus",
+      "consorts": []
+    },
+      {
+      "id": "Crius",
+      "name": "Крій",
+      "subtitle": "Титан. Божество лідерства і домашніх тварин",
+      "description": "",
+      "relationship": "Gaia-Uranus",
+      "consorts": []
+    },
+      {
+      "id": "Hyperion",
+      "name": "Гіперіон",
+      "subtitle": "Титан. Персоніфікація сонця",
+      "description": "",
+      "relationship": "Gaia-Uranus",
+      "consorts": []
+    },
+      {
+      "id": "Iapetus",
+      "name": "Япет",
+      "subtitle": "Титан. Символом прадавньої стихійній сили",
+      "description": "",
+      "relationship": "Gaia-Uranus",
+      "consorts": []
+    },
+      {
+      "id": "Theia",
+      "name": "Тея",
+      "subtitle": "Титаніда. Богиня світла, зоряного сяйва",
+      "description": "",
+      "relationship": "Gaia-Uranus",
+      "consorts": []
+    },
+      {
+      "id": "Themis",
+      "name": "Феміда",
+      "subtitle": "Титаніда. Богиня права й законного порядку",
+      "description": "",
+      "relationship": "Gaia-Uranus",
+      "consorts": []
+    },
+      {
+      "id": "Mnemosyne",
+      "name": "Мнемосіна",
+      "subtitle": "Титаніда. Богиня пам'яті",
+      "description": "",
+      "relationship": "Gaia-Uranus",
+      "consorts": []
+    },
+      {
+      "id": "Phoebe",
+      "name": "Феба",
+      "subtitle": "Титаніда. Богиня передбачення",
+      "description": "",
+      "relationship": "Gaia-Uranus",
+      "consorts": []
+    },
+      {
+      "id": "Tethys",
+      "name": "Тетія",
+      "subtitle": "Титаніда. Мати богів та всіх річок",
+      "description": "Богиня, яка давала життя всім, на що вказує її ім'я. Як божество жіночої статі, вона була уособленням водяної стихії, котра, з другого боку, уособлювалася в чоловічому образі Океана",
+      "relationship": "Gaia-Uranus",
+      "consorts": []
+    },
+      {
+      "id": "Rhea",
+      "name": "Рея",
+      "subtitle": "Титаніда. Богиня-мати, покровителька материнства, родючості та вічного потоку поколінь",
       "description": "",
       "relationship": "Gaia-Uranus",
       "consorts": []
