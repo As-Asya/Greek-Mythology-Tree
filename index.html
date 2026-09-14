@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
@@ -8,17 +8,26 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Greek Mythology Tree</title>
+    <title>
+        Greek Mythology Tree
+    </title>
 </head>
 
 <body>
 
     <div id="layout">
 
-        <!-- Граф -->
+        <!-- =========================
+        ГРАФ
+        ========================= -->
+
         <div id="cy"></div>
 
-        <!-- Пошук персонажів -->
+
+        <!-- =========================
+        ПОШУК
+        ========================= -->
+
         <div id="search">
 
             <input
@@ -32,66 +41,73 @@
 
         </div>
 
-        <!-- Керування масштабом -->
+
+        <!-- =========================
+        КНОПКИ КЕРУВАННЯ
+        ========================= -->
+
         <div id="controls">
 
             <button
                 id="zoomOutButton"
-                title="Віддалити"
                 type="button"
+                aria-label="Віддалити"
             >
                 −
             </button>
 
             <button
                 id="zoomInButton"
-                title="Наблизити"
                 type="button"
+                aria-label="Наблизити"
             >
                 +
             </button>
 
             <button
                 id="fitButton"
-                title="Показати все дерево"
                 type="button"
+                aria-label="Показати все дерево"
             >
                 ⌂
             </button>
 
+            <button
+                id="compareButton"
+                type="button"
+                aria-label="Порівняти родоводи"
+                aria-pressed="false"
+            >
+                ⇄
+            </button>
+
         </div>
 
-        <!-- Інформаційна картка -->
+
+        <!-- =========================
+        ІНФОРМАЦІЙНА ПАНЕЛЬ
+        ========================= -->
+
         <aside id="info">
 
-            <div
-                id="infoHandle"
-                aria-hidden="true"
-            ></div>
+            <div class="info-drag-handle"></div>
 
             <button
                 id="closeInfoButton"
                 type="button"
                 aria-label="Закрити панель"
-                title="Закрити панель"
             >
                 ×
             </button>
 
-            <div id="infoContent">
-
-                <h2>Оберіть персонажа</h2>
-
-                <p>
-                    Натисніть на будь-якого персонажа
-                    на дереві
-                </p>
-
-            </div>
+            <p>
+                Оберіть персонажа
+            </p>
 
         </aside>
 
     </div>
+
 
     <script
         type="module"

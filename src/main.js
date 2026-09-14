@@ -3,21 +3,31 @@ import "./style.css";
 import cytoscape from "cytoscape";
 import dagre from "cytoscape-dagre";
 
-import { TYPES, GROUPS } from "./config.js";
-import { setGraph, focusCharacter } from "./graph.js";
+import {
+    TYPES,
+    GROUPS
+} from "./config.js";
+
+import {
+    setGraph,
+    focusCharacter,
+    setCompareMode,
+    clearSelection
+} from "./graph.js";
 
 cytoscape.use(dagre);
 
 
-/* =========================
-ЗАПУСК ПРОЄКТУ
-========================= */
-
 async function start() {
 
-    const response = await fetch(
-        `${import.meta.env.BASE_URL}mythology.json`
-    );
+    /* =========================
+    ЗАВАНТАЖЕННЯ ДАНИХ
+    ========================= */
+
+    const response =
+        await fetch(
+            `${import.meta.env.BASE_URL}mythology.json`
+        );
 
     if (!response.ok) {
         throw new Error(
@@ -25,7 +35,8 @@ async function start() {
         );
     }
 
-    const data = await response.json();
+    const data =
+        await response.json();
 
 
     /* =========================
@@ -80,7 +91,7 @@ async function start() {
 
 
     /* =========================
-    ЗВ’ЯЗКИ
+    РЕБРА
     ========================= */
 
     const edges = [];
@@ -92,7 +103,9 @@ async function start() {
                 `relationship-${relationship.id}`;
 
 
-            /* Партнери → вузол стосунків */
+            /* =====================
+            ПАРТНЕРИ
+            ===================== */
 
             relationship.partners.forEach(
                 (partnerId) => {
@@ -112,12 +125,13 @@ async function start() {
                         classes:
                             "relationship-edge"
                     });
-
                 }
             );
 
 
-            /* Вузол стосунків → діти */
+            /* =====================
+            ДІТИ
+            ===================== */
 
             data.characters
                 .filter(
@@ -143,24 +157,26 @@ async function start() {
                             classes:
                                 "child-edge"
                         });
-
                     }
                 );
-
         }
     );
 
 
     /* =========================
-    КОЛЬОРИ ПЕРСОНАЖІВ
+    КОЛЬОРИ ВУЗЛІВ
     ========================= */
 
     const nodeStyles = [];
 
-    Object.entries(TYPES).forEach(
+    Object.entries(
+        TYPES
+    ).forEach(
         ([type]) => {
 
-            Object.entries(GROUPS).forEach(
+            Object.entries(
+                GROUPS
+            ).forEach(
                 ([group, shades]) => {
 
                     for (
@@ -180,12 +196,9 @@ async function start() {
                                     shades[power]
                             }
                         });
-
                     }
-
                 }
             );
-
         }
     );
 
@@ -194,300 +207,447 @@ async function start() {
     CYTOSCAPE
     ========================= */
 
-    const cy = cytoscape({
+    const cy =
+        cytoscape({
 
-        container:
-            document.getElementById("cy"),
+            container:
+                document.getElementById(
+                    "cy"
+                ),
 
-        elements: [
-            ...characterNodes,
-            ...relationshipNodes,
-            ...edges
-        ],
+            elements: [
+                ...characterNodes,
+                ...relationshipNodes,
+                ...edges
+            ],
 
-        style: [
+            style: [
 
-            /* Персонажі */
+                /* =====================
+                ПЕРСОНАЖ
+                ===================== */
 
-            {
-                selector:
-                    'node[kind="character"]',
+                {
+                    selector:
+                        'node[kind="character"]',
 
-                style: {
+                    style: {
 
-                    label:
-                        "data(label)",
+                        label:
+                            "data(label)",
 
-                    shape:
-                        "round-rectangle",
+                        shape:
+                            "round-rectangle",
 
-                    width:
-                        170,
+                        width:
+                            170,
 
-                    height:
-                        75,
+                        height:
+                            75,
 
-                    "background-color":
-                        "#F3EBDD",
+                        "background-color":
+                            "#F3EBDD",
 
-                    "border-width":
-                        2,
+                        "border-width":
+                            2,
 
-                    "border-color":
-                        "#B89B5E",
+                        "border-color":
+                            "#B89B5E",
 
-                    color:
-                        "#2B2B2B",
+                        color:
+                            "#2B2B2B",
 
-                    "font-size":
-                        18,
+                        "font-size":
+                            18,
 
-                    "font-weight":
-                        "bold",
+                        "font-weight":
+                            "bold",
 
-                    "text-valign":
-                        "center",
+                        "text-valign":
+                            "center",
 
-                    "text-halign":
-                        "center",
+                        "text-halign":
+                            "center",
 
-                    "text-wrap":
-                        "wrap",
+                        "text-wrap":
+                            "wrap",
 
-                    "text-max-width":
-                        145
+                        "text-max-width":
+                            145
+                    }
+                },
 
+
+                ...nodeStyles,
+
+
+                /* =====================
+                ВУЗОЛ СТОСУНКУ
+                ===================== */
+
+                {
+                    selector:
+                        ".relationship-node",
+
+                    style: {
+
+                        label:
+                            "",
+
+                        shape:
+                            "ellipse",
+
+                        width:
+                            10,
+
+                        height:
+                            10,
+
+                        "background-color":
+                            "#B89B5E",
+
+                        "border-width":
+                            1,
+
+                        "border-color":
+                            "#8C6A2F",
+
+                        opacity:
+                            0.9
+                    }
+                },
+
+
+                /* =====================
+                ВИБРАНИЙ ПЕРСОНАЖ
+                ===================== */
+
+                {
+                    selector:
+                        'node[kind="character"]:selected',
+
+                    style: {
+
+                        "border-width":
+                            5,
+
+                        "border-color":
+                            "#8C6A2F",
+
+                        "overlay-opacity":
+                            0
+                    }
+                },
+
+
+                /* =====================
+                ЗВИЧАЙНІ ПРЕДКИ
+                ===================== */
+
+                {
+                    selector:
+                        ".ancestor",
+
+                    style: {
+
+                        "background-color":
+                            "#FFE39A",
+
+                        "border-color":
+                            "#C28A00",
+
+                        "border-width":
+                            4
+                    }
+                },
+
+
+                /* =====================
+                ЗВИЧАЙНІ РЕБРА
+                ===================== */
+
+                {
+                    selector:
+                        "edge",
+
+                    style: {
+
+                        width:
+                            2,
+
+                        "line-color":
+                            "#AAA39A",
+
+                        "curve-style":
+                            "straight",
+
+                        "target-arrow-shape":
+                            "none",
+
+                        opacity:
+                            0.8
+                    }
+                },
+
+
+                /* =====================
+                РЕБРА СТОСУНКІВ
+                ===================== */
+
+                {
+                    selector:
+                        ".relationship-edge",
+
+                    style: {
+
+                        width:
+                            3,
+
+                        "line-color":
+                            "#B89B5E",
+
+                        "curve-style":
+                            "straight",
+
+                        "line-style":
+                            "solid",
+
+                        opacity:
+                            0.95
+                    }
+                },
+
+
+                /* =====================
+                РЕБРА ДІТЕЙ
+                ===================== */
+
+                {
+                    selector:
+                        ".child-edge",
+
+                    style: {
+
+                        width:
+                            2,
+
+                        "line-color":
+                            "#9C958B",
+
+                        "curve-style":
+                            "straight",
+
+                        "line-style":
+                            "solid",
+
+                        opacity:
+                            0.8
+                    }
+                },
+
+
+                /* =====================
+                ПРЕДКИ — РЕБРА
+                ===================== */
+
+                {
+                    selector:
+                        "edge.ancestor",
+
+                    style: {
+
+                        "line-color":
+                            "#C28A00",
+
+                        width:
+                            4,
+
+                        opacity:
+                            1
+                    }
+                },
+
+
+                /* =====================
+                ПОРІВНЯННЯ — ПЕРШИЙ
+                ===================== */
+
+                {
+                    selector:
+                        "node.compare-first",
+
+                    style: {
+
+                        "background-color":
+                            "#FFE39A",
+
+                        "border-color":
+                            "#C28A00",
+
+                        "border-width":
+                            4
+                    }
+                },
+
+
+                /* =====================
+                ПОРІВНЯННЯ — ДРУГИЙ
+                ===================== */
+
+                {
+                    selector:
+                        "node.compare-second",
+
+                    style: {
+
+                        "background-color":
+                            "#BFD9FF",
+
+                        "border-color":
+                            "#4F8BFF",
+
+                        "border-width":
+                            4
+                    }
+                },
+
+
+                /* =====================
+                ПОРІВНЯННЯ — СПІЛЬНІ
+                ===================== */
+
+                {
+                    selector:
+                        "node.compare-common",
+
+                    style: {
+
+                        "background-color":
+                            "#BFE8C5",
+
+                        "border-color":
+                            "#3F8F4D",
+
+                        "border-width":
+                            4
+                    }
+                },
+
+
+                /* =====================
+                РЕБРА ПЕРШОГО
+                ===================== */
+
+                {
+                    selector:
+                        "edge.compare-first",
+
+                    style: {
+
+                        "line-color":
+                            "#C28A00",
+
+                        width:
+                            4,
+
+                        opacity:
+                            1
+                    }
+                },
+
+
+                /* =====================
+                РЕБРА ДРУГОГО
+                ===================== */
+
+                {
+                    selector:
+                        "edge.compare-second",
+
+                    style: {
+
+                        "line-color":
+                            "#4F8BFF",
+
+                        width:
+                            4,
+
+                        opacity:
+                            1
+                    }
+                },
+
+
+                /* =====================
+                СПІЛЬНІ РЕБРА
+                ===================== */
+
+                {
+                    selector:
+                        "edge.compare-common",
+
+                    style: {
+
+                        "line-color":
+                            "#3F8F4D",
+
+                        width:
+                            4,
+
+                        opacity:
+                            1
+                    }
                 }
-            },
+            ],
 
 
-            ...nodeStyles,
+            /* =========================
+            LAYOUT
+            ========================= */
 
+            layout: {
 
-            /* Вузли стосунків */
+                name:
+                    "dagre",
 
-            {
-                selector:
-                    ".relationship-node",
+                rankDir:
+                    "TB",
 
-                style: {
+                nodeSep:
+                    85,
 
-                    label:
-                        "",
+                rankSep:
+                    170,
 
-                    shape:
-                        "ellipse",
+                edgeSep:
+                    25,
 
-                    width:
-                        10,
+                ranker:
+                    "network-simplex",
 
-                    height:
-                        10,
+                animate:
+                    false,
 
-                    "background-color":
-                        "#B89B5E",
+                fit:
+                    true,
 
-                    "border-width":
-                        1,
-
-                    "border-color":
-                        "#8C6A2F",
-
-                    opacity:
-                        0.9
-
-                }
-            },
-
-
-            /* Обраний персонаж */
-
-            {
-                selector:
-                    'node[kind="character"]:selected',
-
-                style: {
-
-                    "border-width":
-                        5,
-
-                    "border-color":
-                        "#8C6A2F",
-
-                    "overlay-opacity":
-                        0
-
-                }
-            },
-
-
-            /* Предки */
-
-            {
-                selector:
-                    ".ancestor",
-
-                style: {
-
-                    "background-color":
-                        "#FFE39A",
-
-                    "border-color":
-                        "#C28A00",
-
-                    "border-width":
-                        4
-
-                }
-            },
-
-
-            /* Усі лінії */
-
-            {
-                selector:
-                    "edge",
-
-                style: {
-
-                    width:
-                        2,
-
-                    "line-color":
-                        "#AAA39A",
-
-                    "curve-style":
-                        "straight",
-
-                    "target-arrow-shape":
-                        "none",
-
-                    opacity:
-                        0.8
-
-                }
-            },
-
-
-            /* Зв’язки партнерів */
-
-            {
-                selector:
-                    ".relationship-edge",
-
-                style: {
-
-                    width:
-                        3,
-
-                    "line-color":
-                        "#B89B5E",
-
-                    "curve-style":
-                        "straight",
-
-                    "line-style":
-                        "solid",
-
-                    opacity:
-                        0.95
-
-                }
-            },
-
-
-            /* Зв’язки з дітьми */
-
-            {
-                selector:
-                    ".child-edge",
-
-                style: {
-
-                    width:
-                        2,
-
-                    "line-color":
-                        "#9C958B",
-
-                    "curve-style":
-                        "straight",
-
-                    "line-style":
-                        "solid",
-
-                    opacity:
-                        0.8
-
-                }
-            },
-
-
-            /* Підсвічені лінії */
-
-            {
-                selector:
-                    "edge.ancestor",
-
-                style: {
-
-                    "line-color":
-                        "#C28A00",
-
-                    width:
-                        4,
-
-                    opacity:
-                        1
-
-                }
+                padding:
+                    80
             }
-
-        ],
-
-
-        /* Розташування дерева */
-
-        layout: {
-
-            name:
-                "dagre",
-
-            rankDir:
-                "TB",
-
-            nodeSep:
-                85,
-
-            rankSep:
-                170,
-
-            edgeSep:
-                25,
-
-            ranker:
-                "network-simplex",
-
-            animate:
-                false,
-
-            fit:
-                true,
-
-            padding:
-                80
-
-        }
-
-    });
+        });
 
 
-    /* Забороняємо рухати персонажів */
+    /* =========================
+    ЗАБОРОНА ПЕРЕТЯГУВАННЯ
+    ========================= */
 
-    cy.nodes().ungrabify();
+    cy.nodes()
+        .ungrabify();
 
 
-    /* Передаємо граф у graph.js */
+    /* =========================
+    ПЕРЕДАЄМО ГРАФ У GRAPH.JS
+    ========================= */
 
     setGraph(
         cy,
@@ -496,7 +656,7 @@ async function start() {
 
 
     /* =========================
-    ВИБІР ПЕРСОНАЖА
+    КЛІК ПО ПЕРСОНАЖУ
     ========================= */
 
     cy.on(
@@ -507,7 +667,25 @@ async function start() {
             focusCharacter(
                 event.target.id()
             );
+        }
+    );
 
+
+    /* =========================
+    КЛІК ПО ПОРОЖНЬОМУ МІСЦЮ
+    ========================= */
+
+    cy.on(
+        "tap",
+        (event) => {
+
+            if (
+                event.target !== cy
+            ) {
+                return;
+            }
+
+            clearSelection();
         }
     );
 
@@ -539,19 +717,28 @@ async function start() {
             searchResults.innerHTML =
                 "";
 
-            if (query === "") {
+
+            if (
+                query === ""
+            ) {
                 return;
             }
+
 
             const matches =
                 data.characters.filter(
                     (character) =>
                         character.name
                             .toLowerCase()
-                            .includes(query)
+                            .includes(
+                                query
+                            )
                 );
 
-            if (matches.length === 0) {
+
+            if (
+                matches.length === 0
+            ) {
 
                 const message =
                     document.createElement(
@@ -569,8 +756,8 @@ async function start() {
                 );
 
                 return;
-
             }
+
 
             matches.forEach(
                 (character) => {
@@ -589,6 +776,7 @@ async function start() {
                     button.textContent =
                         character.name;
 
+
                     button.addEventListener(
                         "click",
                         () => {
@@ -602,23 +790,21 @@ async function start() {
 
                             searchResults.innerHTML =
                                 "";
-
                         }
                     );
+
 
                     searchResults.appendChild(
                         button
                     );
-
                 }
             );
-
         }
     );
 
 
     /* =========================
-    КНОПКИ МАСШТАБУ
+    КНОПКИ
     ========================= */
 
     const zoomInButton =
@@ -636,56 +822,63 @@ async function start() {
             "fitButton"
         );
 
+    const compareButton =
+        document.getElementById(
+            "compareButton"
+        );
+
+
+    /* =========================
+    ЗБІЛЬШЕННЯ
+    ========================= */
 
     zoomInButton.addEventListener(
         "click",
         () => {
 
             cy.zoom({
-
                 level:
                     cy.zoom() * 1.2,
 
                 renderedPosition: {
-
                     x:
                         cy.width() / 2,
 
                     y:
                         cy.height() / 2
-
                 }
-
             });
-
         }
     );
 
+
+    /* =========================
+    ЗМЕНШЕННЯ
+    ========================= */
 
     zoomOutButton.addEventListener(
         "click",
         () => {
 
             cy.zoom({
-
                 level:
                     cy.zoom() / 1.2,
 
                 renderedPosition: {
-
                     x:
                         cy.width() / 2,
 
                     y:
                         cy.height() / 2
-
                 }
-
             });
-
         }
     );
 
+
+    /* =========================
+    FIT
+    ========================= */
 
     fitButton.addEventListener(
         "click",
@@ -695,13 +888,51 @@ async function start() {
                 cy.elements(),
                 80
             );
-
         }
     );
 
 
     /* =========================
-    ПОЧАТКОВА ПАНЕЛЬ
+    РЕЖИМ ПОРІВНЯННЯ
+    ========================= */
+
+    if (
+        compareButton
+    ) {
+
+        compareButton.addEventListener(
+            "click",
+            () => {
+
+                const active =
+                    !compareButton.classList.contains(
+                        "compare-active"
+                    );
+
+
+                compareButton.classList.toggle(
+                    "compare-active",
+                    active
+                );
+
+
+                setCompareMode(
+                    active
+                );
+
+
+                if (
+                    !active
+                ) {
+                    clearSelection();
+                }
+            }
+        );
+    }
+
+
+    /* =========================
+    ІНФОРМАЦІЙНА ПАНЕЛЬ
     ========================= */
 
     const info =
@@ -709,16 +940,10 @@ async function start() {
             "info"
         );
 
-    const closeInfoButton =
-        document.getElementById(
-            "closeInfoButton"
-        );
 
-
-    /*
-    На телефоні відразу ставимо
-    кнопки над початковою панеллю.
-    */
+    /* =========================
+    ПОЗИЦІЯ КНОПОК
+    ========================= */
 
     function updateInitialControlsPosition() {
 
@@ -729,80 +954,50 @@ async function start() {
             return;
         }
 
+
         const controls =
             document.getElementById(
                 "controls"
             );
 
+
         if (!controls) {
             return;
         }
+
+
+        if (
+            info.classList.contains(
+                "info-closed"
+            )
+        ) {
+
+            controls.style.bottom =
+                "20px";
+
+            return;
+        }
+
 
         const panelHeight =
             info.getBoundingClientRect()
                 .height;
 
+
         controls.style.bottom =
             `${panelHeight + 14}px`;
-
     }
 
-
-    /*
-    Чекаємо, поки браузер
-    повністю розрахує висоту
-    початкової панелі.
-    */
 
     requestAnimationFrame(
         updateInitialControlsPosition
     );
 
 
-    /*
-    Перерахунок після повороту
-    телефона або зміни розміру.
-    */
-
     window.addEventListener(
         "resize",
         updateInitialControlsPosition
     );
-
-
-    /* Закриття початкової панелі */
-
-    if (
-        info &&
-        closeInfoButton
-    ) {
-
-        closeInfoButton.addEventListener(
-            "click",
-            () => {
-
-                info.classList.add(
-                    "info-closed"
-                );
-
-                const controls =
-                    document.getElementById(
-                        "controls"
-                    );
-
-                if (
-                    controls &&
-                    window.innerWidth <= 768
-                ) {
-                    controls.style.bottom =
-                        "20px";
-                }
-
-            }
-        );
-
-    }
-
 }
 
 
@@ -817,6 +1012,5 @@ start().catch(
             "Помилка запуску:",
             error
         );
-
     }
 );

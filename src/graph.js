@@ -3,8 +3,13 @@ import { showCharacter } from "./ui.js";
 let cy = null;
 let data = null;
 
+let compareMode = false;
+let compareFirst = null;
+let compareSecond = null;
+
+
 /* =========================
-ЗБЕРІГАЄМО ГРАФ І ДАНІ
+ВСТАНОВЛЕННЯ ГРАФА
 ========================= */
 
 export function setGraph(
@@ -15,15 +20,547 @@ export function setGraph(
     data = graphData;
 }
 
+
 /* =========================
-ПІДСВІЧУВАННЯ ПРЕДКІВ
+ОЧИЩЕННЯ ПІДСВІЧУВАННЯ
 ========================= */
 
-function highlightAncestors(node) {
-    if (!node || node.empty()) {
+function clearHighlights() {
+    if (!cy) {
         return;
     }
 
+    cy.elements().removeClass(
+        "ancestor"
+    );
+
+    cy.elements().removeClass(
+        "compare-first"
+    );
+
+    cy.elements().removeClass(
+        "compare-second"
+    );
+
+    cy.elements().removeClass(
+        "compare-common"
+    );
+}
+
+
+/* =========================
+ОТРИМАТИ БАТЬКІВ ПЕРСОНАЖА
+========================= */
+
+function getParentIds(
+    characterId
+) {
+    if (!data) {
+        return [];
+    }
+
+    const character =
+        data.characters.find(
+            (item) =>
+                item.id ===
+                characterId
+        );
+
+    if (
+        !character ||
+        !character.relationship
+    ) {
+        return [];
+    }
+
+    const relationship =
+        data.relationships.find(
+            (item) =>
+                item.id ===
+                character.relationship
+        );
+
+    if (!relationship) {
+        return [];
+    }
+
+    return relationship.partners;
+}
+
+
+/* =========================
+ОТРИМАТИ ВСІХ ПРЕДКІВ
+========================= */
+
+function getAncestors(
+    characterId
+) {
+    const ancestors =
+        new Set();
+
+    function walk(
+        currentId
+    ) {
+        const parentIds =
+            getParentIds(
+                currentId
+            );
+
+        parentIds.forEach(
+            (parentId) => {
+                if (
+                    ancestors.has(
+                        parentId
+                    )
+                ) {
+                    return;
+                }
+
+                ancestors.add(
+                    parentId
+                );
+
+                walk(
+                    parentId
+                );
+            }
+        );
+    }
+
+    walk(
+        characterId
+    );
+
+    return ancestors;
+}
+
+
+/* =========================
+ОТРИМАТИ ВСІ ВУЗЛИ РОДОВОДУ
+========================= */
+
+function getLineageNodes(
+    characterId
+) {
+    const ancestors =
+        getAncestors(
+            characterId
+        );
+
+    return new Set([
+        characterId,
+        ...ancestors
+    ]);
+}
+
+
+/* =========================
+ПІДСВІТИТИ ОДИН РІД
+========================= */
+
+function highlightLineage(
+    characterId,
+    className
+) {
+    if (!cy) {
+        return new Set();
+    }
+
+    const lineage =
+        getLineageNodes(
+            characterId
+        );
+
+    lineage.forEach(
+        (nodeId) => {
+            const node =
+                cy.getElementById(
+                    nodeId
+                );
+
+            if (
+                !node.empty()
+            ) {
+                node.addClass(
+                    className
+                );
+            }
+        }
+    );
+
+    /*
+    Підсвічуємо реальні ребра,
+    які належать цьому родоводу.
+    */
+
+    cy.edges().forEach(
+        (edge) => {
+            const sourceId =
+                edge.source().id();
+
+            const targetId =
+                edge.target().id();
+
+            /*
+            Вузол relationship знаходиться
+            між батьками та дитиною.
+            */
+
+            if (
+                lineage.has(
+                    sourceId
+                ) ||
+                lineage.has(
+                    targetId
+                )
+            ) {
+                edge.addClass(
+                    className
+                );
+            }
+        }
+    );
+
+    return lineage;
+}
+
+
+/* =========================
+СПІЛЬНІ ПРЕДКИ
+========================= */
+
+function highlightCommonAncestors(
+    firstLineage,
+    secondLineage
+) {
+    if (!cy) {
+        return;
+    }
+
+    const common =
+        new Set();
+
+    firstLineage.forEach(
+        (nodeId) => {
+            if (
+                secondLineage.has(
+                    nodeId
+                )
+            ) {
+                common.add(
+                    nodeId
+                );
+            }
+        }
+    );
+
+    /*
+    Спільні персонажі стають зеленими.
+    */
+
+    common.forEach(
+        (nodeId) => {
+            const node =
+                cy.getElementById(
+                    nodeId
+                );
+
+            if (
+                node.empty()
+            ) {
+                return;
+            }
+
+            node.removeClass(
+                "compare-first"
+            );
+
+            node.removeClass(
+                "compare-second"
+            );
+
+            node.addClass(
+                "compare-common"
+            );
+        }
+    );
+
+    /*
+    Зеленими стають тільки ті ребра,
+    які повністю належать спільній
+    частині родоводу.
+    */
+
+    cy.edges().forEach(
+        (edge) => {
+            const sourceId =
+                edge.source().id();
+
+            const targetId =
+                edge.target().id();
+
+            if (
+                common.has(
+                    sourceId
+                ) &&
+                common.has(
+                    targetId
+                )
+            ) {
+                edge.removeClass(
+                    "compare-first"
+                );
+
+                edge.removeClass(
+                    "compare-second"
+                );
+
+                edge.addClass(
+                    "compare-common"
+                );
+            }
+        }
+    );
+}
+
+
+/* =========================
+ПОКАЗАТИ ПОРІВНЯННЯ
+========================= */
+
+function renderComparison() {
+    if (
+        !cy ||
+        !compareFirst ||
+        !compareSecond
+    ) {
+        return;
+    }
+
+    clearHighlights();
+
+    const firstLineage =
+        highlightLineage(
+            compareFirst,
+            "compare-first"
+        );
+
+    const secondLineage =
+        highlightLineage(
+            compareSecond,
+            "compare-second"
+        );
+
+    highlightCommonAncestors(
+        firstLineage,
+        secondLineage
+    );
+
+    /*
+    Самі обрані персонажі
+    теж залишаються видимими.
+    */
+
+    const firstNode =
+        cy.getElementById(
+            compareFirst
+        );
+
+    const secondNode =
+        cy.getElementById(
+            compareSecond
+        );
+
+    if (
+        !firstNode.empty()
+    ) {
+        firstNode.select();
+    }
+
+    if (
+        !secondNode.empty()
+    ) {
+        secondNode.select();
+    }
+}
+
+
+/* =========================
+ВИБІР ПЕРСОНАЖА
+В РЕЖИМІ ПОРІВНЯННЯ
+========================= */
+
+export function selectForComparison(
+    id
+) {
+    if (
+        !compareMode ||
+        !cy ||
+        !data
+    ) {
+        return;
+    }
+
+    const node =
+        cy.getElementById(
+            id
+        );
+
+    if (
+        node.empty()
+    ) {
+        return;
+    }
+
+    /*
+    Перший персонаж.
+    */
+
+    if (
+        !compareFirst
+    ) {
+        compareFirst =
+            id;
+
+        compareSecond =
+            null;
+
+        cy.elements()
+            .unselect();
+
+        clearHighlights();
+
+        node.select();
+
+        highlightLineage(
+            compareFirst,
+            "compare-first"
+        );
+
+        showCharacterById(
+            id
+        );
+
+        return;
+    }
+
+    /*
+    Якщо натиснули першого
+    ще раз — нічого не робимо.
+    */
+
+    if (
+        id === compareFirst
+    ) {
+        return;
+    }
+
+    /*
+    Другий персонаж.
+    */
+
+    if (
+        !compareSecond
+    ) {
+        compareSecond =
+            id;
+
+        renderComparison();
+
+        showCharacterById(
+            id
+        );
+
+        return;
+    }
+
+    /*
+    Якщо вже є два персонажі,
+    новий клік замінює другого.
+    */
+
+    compareSecond =
+        id;
+
+    renderComparison();
+
+    showCharacterById(
+        id
+    );
+}
+
+
+/* =========================
+ПОКАЗ ПАНЕЛІ ПЕРСОНАЖА
+========================= */
+
+function showCharacterById(
+    id
+) {
+    if (!data) {
+        return;
+    }
+
+    const character =
+        data.characters.find(
+            (item) =>
+                item.id ===
+                id
+        );
+
+    if (!character) {
+        return;
+    }
+
+    showCharacter(
+        character,
+        data,
+        focusCharacter
+    );
+}
+
+
+/* =========================
+РЕЖИМ ПОРІВНЯННЯ
+========================= */
+
+export function setCompareMode(
+    enabled
+) {
+    compareMode =
+        enabled;
+
+    compareFirst =
+        null;
+
+    compareSecond =
+        null;
+
+    clearHighlights();
+
+    if (cy) {
+        cy.elements()
+            .unselect();
+    }
+}
+
+
+/* =========================
+СТАН РЕЖИМУ
+========================= */
+
+export function isCompareMode() {
+    return compareMode;
+}
+
+
+/* =========================
+ЗВИЧАЙНЕ ПІДСВІЧУВАННЯ ПРЕДКІВ
+========================= */
+
+function highlightAncestors(
+    node
+) {
     if (
         node.hasClass(
             "ancestor"
@@ -35,12 +572,6 @@ function highlightAncestors(node) {
     node.addClass(
         "ancestor"
     );
-
-    /*
-    Якщо це персонаж,
-    шукаємо вузол стосунків,
-    через який він походить.
-    */
 
     if (
         node.data("kind") ===
@@ -54,8 +585,7 @@ function highlightAncestors(node) {
             );
 
         if (
-            !character ||
-            !character.relationship
+            !character?.relationship
         ) {
             return;
         }
@@ -71,44 +601,26 @@ function highlightAncestors(node) {
             return;
         }
 
-        /*
-        Знаходимо лінію
-        від вузла стосунків
-        до персонажа.
-        */
+        relationshipNode
+            .incomers("edge")
+            .forEach(
+                (edge) => {
+                    edge.addClass(
+                        "ancestor"
+                    );
 
-        const childEdge =
-            relationshipNode
-                .outgoers("edge")
-                .filter(
-                    (edge) =>
-                        edge.target().id() ===
-                        node.id()
-                );
-
-        childEdge.addClass(
-            "ancestor"
-        );
-
-        highlightAncestors(
-            relationshipNode
-        );
-
-        return;
+                    highlightAncestors(
+                        edge.source()
+                    );
+                }
+            );
     }
-
-    /*
-    Якщо це вузол стосунків,
-    переходимо до обох
-    партнерів.
-    */
 
     if (
         node.data("kind") ===
         "relationship"
     ) {
-        node
-            .incomers("edge")
+        node.incomers("edge")
             .forEach(
                 (edge) => {
                     edge.addClass(
@@ -123,11 +635,14 @@ function highlightAncestors(node) {
     }
 }
 
+
 /* =========================
-ВИБІР ПЕРСОНАЖА
+FOCUS ПЕРСОНАЖА
 ========================= */
 
-export function focusCharacter(id) {
+export function focusCharacter(
+    id
+) {
     if (
         !cy ||
         !data
@@ -136,73 +651,93 @@ export function focusCharacter(id) {
     }
 
     const node =
-        cy.getElementById(id);
+        cy.getElementById(
+            id
+        );
 
     if (
-        !node ||
         node.empty()
     ) {
         return;
     }
 
     /*
-    Прибираємо попереднє
-    підсвічування.
+    У режимі порівняння
+    працює інша логіка.
     */
 
-    cy.elements().removeClass(
-        "ancestor"
-    );
+    if (
+        compareMode
+    ) {
+        selectForComparison(
+            id
+        );
 
-    /*
-    Прибираємо попередній
-    вибір.
-    */
+        return;
+    }
 
-    cy.elements().unselect();
+    clearHighlights();
 
-    /*
-    Виділяємо персонажа.
-    */
+    cy.elements()
+        .unselect();
 
     node.select();
-
-    /*
-    Підсвічуємо його
-    предків.
-    */
 
     highlightAncestors(
         node
     );
 
-    /*
-    Шукаємо дані
-    вибраного персонажа.
-    */
+    showCharacterById(
+        id
+    );
+}
 
-    const character =
-        data.characters.find(
-            (item) =>
-                item.id === id
-        );
 
-    if (!character) {
-        return;
+/* =========================
+ПОВНЕ СКИДАННЯ
+========================= */
+
+export function clearSelection() {
+    compareFirst =
+        null;
+
+    compareSecond =
+        null;
+
+    clearHighlights();
+
+    if (cy) {
+        cy.elements()
+            .unselect();
     }
 
-    /*
-    Передаємо focusCharacter
-    у UI як функцію.
-    
-    Завдяки цьому ui.js
-    не імпортує graph.js,
-    і циклічного імпорту немає.
-    */
+    const info =
+        document.getElementById(
+            "info"
+        );
 
-    showCharacter(
-        character,
-        data,
-        focusCharacter
-    );
+    if (info) {
+        info.classList.add(
+            "info-closed"
+        );
+
+        info.style.transform =
+            "";
+
+        info.style.transition =
+            "";
+    }
+
+    const controls =
+        document.getElementById(
+            "controls"
+        );
+
+    if (
+        controls &&
+        window.innerWidth <= 768
+    ) {
+        controls.style.bottom =
+            "20px";
+    }
 }

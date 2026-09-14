@@ -1,11 +1,8 @@
 html,
 body {
     margin: 0;
-
     width: 100%;
-
     height: 100%;
-
     overflow: hidden;
 
     font-family:
@@ -19,8 +16,9 @@ body {
         #302B24;
 }
 
+
 /* =========================
-ОСНОВНИЙ МАКЕТ
+ОСНОВНИЙ LAYOUT
 ========================= */
 
 #layout {
@@ -39,6 +37,11 @@ body {
     background:
         #F4F0E7;
 }
+
+
+/* =========================
+ГРАФ
+========================= */
 
 #cy {
     flex:
@@ -62,8 +65,9 @@ body {
         );
 }
 
+
 /* =========================
-ПРАВА ІНФОРМАЦІЙНА ПАНЕЛЬ
+ІНФОРМАЦІЙНА ПАНЕЛЬ
 ========================= */
 
 #info {
@@ -107,15 +111,14 @@ body {
         200;
 }
 
-/* Повністю прихована панель */
-
 #info.info-closed {
     display:
         none;
 }
 
+
 /* =========================
-ЗАГОЛОВКИ ТА ТЕКСТ
+ЗАГОЛОВКИ
 ========================= */
 
 #info h2 {
@@ -153,6 +156,11 @@ body {
         18px;
 }
 
+
+/* =========================
+ЗВИЧАЙНИЙ ТЕКСТ
+========================= */
+
 #info p {
     margin:
         0;
@@ -163,6 +171,37 @@ body {
     color:
         #5B554C;
 }
+
+
+/* =========================
+ОПИС — АБЗАЦИ
+========================= */
+
+#info .description {
+    color:
+        #5B554C;
+}
+
+#info .description .description-paragraph {
+    margin:
+        0 0 18px;
+
+    padding:
+        0;
+
+    line-height:
+        1.7;
+}
+
+#info .description .description-paragraph:last-child {
+    margin-bottom:
+        0;
+}
+
+
+/* =========================
+СПИСКИ
+========================= */
 
 #info ul {
     margin:
@@ -179,6 +218,7 @@ body {
     color:
         #5B554C;
 }
+
 
 /* =========================
 ПОСИЛАННЯ НА ПЕРСОНАЖІВ
@@ -220,6 +260,17 @@ body {
     color:
         #A06F1B;
 }
+
+
+/* =========================
+РУЧКА МОБІЛЬНОЇ ПАНЕЛІ
+========================= */
+
+.info-drag-handle {
+    display:
+        none;
+}
+
 
 /* =========================
 КНОПКА ЗАКРИТТЯ
@@ -282,8 +333,9 @@ body {
         scale(1.05);
 }
 
+
 /* =========================
-КНОПКИ МАСШТАБУ
+КНОПКИ КЕРУВАННЯ
 ========================= */
 
 #controls {
@@ -380,6 +432,37 @@ body {
         translateY(0);
 }
 
+
+/* =========================
+РЕЖИМ ПОРІВНЯННЯ
+========================= */
+
+#compareButton {
+    font-size:
+        20px;
+}
+
+#compareButton.compare-active {
+    background:
+        #FFF1B8;
+
+    border-color:
+        #C28A00;
+
+    color:
+        #7A5A00;
+
+    box-shadow:
+        0 6px 18px
+        rgba(
+            194,
+            138,
+            0,
+            0.24
+        );
+}
+
+
 /* =========================
 ПОШУК
 ========================= */
@@ -467,6 +550,7 @@ body {
             0.16
         );
 }
+
 
 /* =========================
 РЕЗУЛЬТАТИ ПОШУКУ
@@ -579,6 +663,7 @@ body {
         center;
 }
 
+
 /* =========================
 МОБІЛЬНА ВЕРСІЯ
 ========================= */
@@ -596,6 +681,11 @@ body {
             100vh;
     }
 
+
+    /* =====================
+    ГРАФ
+    ===================== */
+
     #cy {
         width:
             100%;
@@ -604,7 +694,10 @@ body {
             100vh;
     }
 
-    /* Нижня панель */
+
+    /* =====================
+    ІНФО-ПАНЕЛЬ
+    ===================== */
 
     #info {
         position:
@@ -665,12 +758,51 @@ body {
             200;
     }
 
-    /* Якщо панель закрита */
-
     #info.info-closed {
         display:
             none;
     }
+
+
+    /* =====================
+    РУЧКА
+    ===================== */
+
+    .info-drag-handle {
+        display:
+            block;
+
+        width:
+            44px;
+
+        height:
+            5px;
+
+        margin:
+            -10px auto 16px;
+
+        border-radius:
+            999px;
+
+        background:
+            #CFC5B3;
+
+        cursor:
+            grab;
+
+        touch-action:
+            none;
+    }
+
+    .info-drag-handle:active {
+        cursor:
+            grabbing;
+    }
+
+
+    /* =====================
+    ЗАГОЛОВОК
+    ===================== */
 
     #info h2 {
         margin:
@@ -694,6 +826,11 @@ body {
             17px;
     }
 
+
+    /* =====================
+    ТЕКСТ
+    ===================== */
+
     #info p,
     #info li {
         font-size:
@@ -703,7 +840,18 @@ body {
             1.55;
     }
 
-    /* Пошук */
+    #info .description .description-paragraph {
+        margin-bottom:
+            16px;
+
+        line-height:
+            1.6;
+    }
+
+
+    /* =====================
+    ПОШУК
+    ===================== */
 
     #search {
         top:
@@ -745,38 +893,45 @@ body {
             16px;
     }
 
-    /*
-    Кнопки масштабу.
 
-    Вони не прив’язані
-    до 38vh, тому не
-    стрибають надто високо.
-    */
+    /* =====================
+    КНОПКИ
+    ===================== */
 
- #controls {
-    position: fixed;
+    #controls {
+        position:
+            fixed;
 
-    left: 12px;
+        left:
+            12px;
 
-    top: auto;
+        top:
+            auto;
 
-    bottom: 20px;
+        bottom:
+            20px;
 
-    transform: none;
+        transform:
+            none;
 
-    display: flex;
+        display:
+            flex;
 
-    flex-direction: column;
+        flex-direction:
+            column;
 
-    gap: 7px;
+        gap:
+            7px;
 
-    z-index: 250;
+        z-index:
+            250;
 
-    padding: 0;
+        padding:
+            0;
 
-    transition:
-        bottom 0.25s ease;
-}
+        transition:
+            bottom 0.25s ease;
+    }
 
     #controls button {
         width:
@@ -792,24 +947,62 @@ body {
             19px;
     }
 
-    /* Кнопка закриття */
+    #compareButton {
+        font-size:
+            18px;
+    }
+
+
+    /* =====================
+    ЗАКРИТТЯ
+    ===================== */
 
     #closeInfoButton {
-        top:
-            10px;
-
-        right:
-            12px;
-
-        width:
-            34px;
-
-        height:
-            34px;
+        display:
+            none;
     }
 }
-@media (max-width: 768px) {
-    #closeInfoButton {
-        display: none;
-    }
+/* =========================
+ПОРІВНЯННЯ
+========================= */
+
+node.compare-first {
+    background-color: #FFE39A;
+    border-color: #C28A00;
+    border-width: 4px;
+}
+
+node.compare-second {
+    background-color: #BFD9FF;
+    border-color: #4F8BFF;
+    border-width: 4px;
+}
+
+node.compare-common {
+    background-color: #BFE8C5;
+    border-color: #3F8F4D;
+    border-width: 4px;
+}
+
+
+/* =========================
+ЛІНІЇ ПОРІВНЯННЯ
+========================= */
+
+edge.compare-first {
+    line-color: #C28A00;
+    width: 4px;
+    opacity: 1;
+}
+
+edge.compare-second {
+    line-color: #4F8BFF;
+    width: 4px;
+    opacity: 1;
+}
+
+edge.compare-common {
+    line-color: #3F8F4D;
+    width: 4px;
+    opacity: 1;
 }

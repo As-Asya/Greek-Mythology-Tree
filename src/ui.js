@@ -11,6 +11,8 @@ export function showCharacter(
     }
 
     let html = `
+        <div class="info-drag-handle"></div>
+
         <button
             id="closeInfoButton"
             type="button"
@@ -19,28 +21,40 @@ export function showCharacter(
             ×
         </button>
 
-        <h2>${character.name}</h2>
+        <h2>${escapeHtml(character.name)}</h2>
     `;
+
+    /* =========================
+    ПІДЗАГОЛОВОК
+    ========================= */
 
     if (character.subtitle) {
         html += `
             <p>
-                ${character.subtitle}
+                ${escapeHtml(character.subtitle)}
             </p>
         `;
     }
+
+    /* =========================
+    ОПИС
+    ========================= */
 
     if (character.description) {
         html += `
-            <h3>
-                Опис
-            </h3>
+            <h3>Опис</h3>
 
-            <p>
-                ${character.description}
-            </p>
+            <div class="description">
+                ${renderDescription(
+                    character.description
+                )}
+            </div>
         `;
     }
+
+    /* =========================
+    БАТЬКИ
+    ========================= */
 
     if (character.relationship) {
         const relationship =
@@ -79,9 +93,13 @@ export function showCharacter(
                                 <button
                                     class="person-link"
                                     type="button"
-                                    data-id="${parent.id}"
+                                    data-id="${escapeHtml(
+                                        parent.id
+                                    )}"
                                 >
-                                    ${parent.name}
+                                    ${escapeHtml(
+                                        parent.name
+                                    )}
                                 </button>
                             </li>
                         `;
@@ -94,6 +112,10 @@ export function showCharacter(
             }
         }
     }
+
+    /* =========================
+    СТОСУНКИ
+    ========================= */
 
     if (
         Array.isArray(
@@ -129,9 +151,13 @@ export function showCharacter(
                             <button
                                 class="person-link"
                                 type="button"
-                                data-id="${consort.id}"
+                                data-id="${escapeHtml(
+                                    consort.id
+                                )}"
                             >
-                                ${consort.name}
+                                ${escapeHtml(
+                                    consort.name
+                                )}
                             </button>
                         </li>
                     `;
@@ -139,10 +165,14 @@ export function showCharacter(
             );
 
             html += `
-                </ul>
-            `;
+                    </ul>
+                `;
         }
     }
+
+    /* =========================
+    ДІТИ
+    ========================= */
 
     const children =
         data.characters.filter(
@@ -185,9 +215,13 @@ export function showCharacter(
                         <button
                             class="person-link"
                             type="button"
-                            data-id="${child.id}"
+                            data-id="${escapeHtml(
+                                child.id
+                            )}"
                         >
-                            ${child.name}
+                            ${escapeHtml(
+                                child.name
+                            )}
                         </button>
                     </li>
                 `;
@@ -199,13 +233,26 @@ export function showCharacter(
         `;
     }
 
-    info.innerHTML = html;
+    /* =========================
+    ВСТАВЛЯЄМО ПАНЕЛЬ
+    ========================= */
+
+    info.innerHTML =
+        html;
 
     info.classList.remove(
         "info-closed"
     );
 
-    info.style.transform = "";
+    info.style.transform =
+        "";
+
+    info.style.transition =
+        "";
+
+    /* =========================
+    ПОСИЛАННЯ НА ПЕРСОНАЖІВ
+    ========================= */
 
     info.querySelectorAll(
         ".person-link"
@@ -214,13 +261,29 @@ export function showCharacter(
             button.addEventListener(
                 "click",
                 () => {
-                    focusCharacter(
-                        button.dataset.id
-                    );
+                    if (
+                        typeof focusCharacter !==
+                        "function"
+                    ) {
+                        return;
+                    }
+
+                    const id =
+                        button.dataset.id;
+
+                    if (!id) {
+                        return;
+                    }
+
+                    focusCharacter(id);
                 }
             );
         }
     );
+
+    /* =========================
+    КНОПКА ЗАКРИТТЯ
+    ========================= */
 
     const closeButton =
         info.querySelector(
@@ -235,12 +298,22 @@ export function showCharacter(
                     "info-closed"
                 );
 
+                info.style.transform =
+                    "";
+
+                info.style.transition =
+                    "";
+
                 updateControlsPosition(
                     info
                 );
             }
         );
     }
+
+    /* =========================
+    МОБІЛЬНИЙ DRAG
+    ========================= */
 
     setupMobileDrag(info);
 
@@ -251,18 +324,93 @@ export function showCharacter(
 
 
 /* =========================
-ДРАГ ПАНЕЛІ НА ТЕЛЕФОНІ
+РОЗБИВАЄМО ОПИС НА АБЗАЦИ
 ========================= */
 
-function setupMobileDrag(info) {
+function renderDescription(
+    text
+) {
+    return String(text)
+        .split(/\n\s*\n/)
+        .map(
+            (paragraph) =>
+                paragraph.trim()
+        )
+        .filter(
+            (paragraph) =>
+                paragraph.length > 0
+        )
+        .map(
+            (paragraph) => `
+                <p class="description-paragraph">
+                    ${escapeHtml(
+                        paragraph
+                    ).replace(
+                        /\n/g,
+                        "<br>"
+                    )}
+                </p>
+            `
+        )
+        .join("");
+}
+
+
+/* =========================
+ЗАХИСТ HTML
+========================= */
+
+function escapeHtml(
+    text
+) {
+    return String(text)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+}
+
+
+/* =========================
+МОБІЛЬНИЙ DRAG
+========================= */
+
+function setupMobileDrag(
+    info
+) {
     if (
         window.innerWidth > 768
     ) {
         return;
     }
 
+    const dragHandle =
+        info.querySelector(
+            ".info-drag-handle"
+        );
+
+    if (!dragHandle) {
+        return;
+    }
+
     if (
-        info.dataset.dragReady ===
+        dragHandle.dataset.dragReady ===
         "true"
     ) {
         updateControlsPosition(
@@ -272,54 +420,60 @@ function setupMobileDrag(info) {
         return;
     }
 
-    info.dataset.dragReady =
+    dragHandle.dataset.dragReady =
         "true";
 
     let startY = 0;
-
     let currentY = 0;
-
     let dragging = false;
 
-    info.addEventListener(
-        "touchstart",
+    /* =========================
+    ПОЧАТОК DRAG
+    ========================= */
+
+    dragHandle.addEventListener(
+        "pointerdown",
         (event) => {
             if (
-                event.touches.length !==
-                1
+                event.pointerType ===
+                    "mouse" &&
+                event.button !== 0
             ) {
                 return;
             }
 
+            dragging = true;
+
             startY =
-                event.touches[0]
-                    .clientY;
+                event.clientY;
 
             currentY = 0;
 
-            dragging = true;
+            dragHandle.setPointerCapture(
+                event.pointerId
+            );
 
             info.style.transition =
                 "none";
-        },
-        {
-            passive: true
+
+            event.preventDefault();
         }
     );
 
-    info.addEventListener(
-        "touchmove",
+    /* =========================
+    РУХ DRAG
+    ========================= */
+
+    dragHandle.addEventListener(
+        "pointermove",
         (event) => {
             if (!dragging) {
                 return;
             }
 
-            const touchY =
-                event.touches[0]
-                    .clientY;
-
             const difference =
-                touchY - startY;
+                event.clientY -
+                startY;
 
             currentY =
                 Math.max(
@@ -329,43 +483,105 @@ function setupMobileDrag(info) {
 
             info.style.transform =
                 `translateY(${currentY}px)`;
-        },
-        {
-            passive: true
+
+            updateControlsPosition(
+                info,
+                currentY
+            );
+
+            event.preventDefault();
         }
     );
 
-    info.addEventListener(
-        "touchend",
-        () => {
+    /* =========================
+    ЗАВЕРШЕННЯ DRAG
+    ========================= */
+
+    dragHandle.addEventListener(
+        "pointerup",
+        (event) => {
             if (!dragging) {
                 return;
             }
 
             dragging = false;
 
+            if (
+                dragHandle.hasPointerCapture(
+                    event.pointerId
+                )
+            ) {
+                dragHandle.releasePointerCapture(
+                    event.pointerId
+                );
+            }
+
             const panelHeight =
-                info.offsetHeight;
+                info.getBoundingClientRect()
+                    .height;
 
             const shouldClose =
                 currentY >
-                panelHeight * 0.3;
+                Math.max(
+                    70,
+                    panelHeight * 0.25
+                );
+
+            info.style.transition =
+                "transform 0.25s ease";
+
+            if (shouldClose) {
+                info.classList.add(
+                    "info-closed"
+                );
+
+                info.style.transform =
+                    "";
+
+                updateControlsPosition(
+                    info
+                );
+            } else {
+                info.style.transform =
+                    "";
+
+                updateControlsPosition(
+                    info
+                );
+            }
+
+            currentY = 0;
+        }
+    );
+
+    /* =========================
+    СКАСУВАННЯ DRAG
+    ========================= */
+
+    dragHandle.addEventListener(
+        "pointercancel",
+        (event) => {
+            if (!dragging) {
+                return;
+            }
+
+            dragging = false;
+
+            if (
+                dragHandle.hasPointerCapture(
+                    event.pointerId
+                )
+            ) {
+                dragHandle.releasePointerCapture(
+                    event.pointerId
+                );
+            }
 
             info.style.transition =
                 "transform 0.25s ease";
 
             info.style.transform =
                 "";
-
-            if (shouldClose) {
-                info.classList.add(
-                    "info-closed"
-                );
-            } else {
-                info.classList.remove(
-                    "info-closed"
-                );
-            }
 
             currentY = 0;
 
@@ -386,7 +602,8 @@ function setupMobileDrag(info) {
 ========================= */
 
 function updateControlsPosition(
-    info
+    info,
+    dragOffset = 0
 ) {
     const controls =
         document.getElementById(
@@ -397,11 +614,6 @@ function updateControlsPosition(
         return;
     }
 
-    /*
-    На ноуті положенням
-    керує CSS.
-    */
-
     if (
         window.innerWidth > 768
     ) {
@@ -410,11 +622,6 @@ function updateControlsPosition(
 
         return;
     }
-
-    /*
-    Закрита мобільна панель:
-    кнопки біля нижнього краю.
-    */
 
     if (
         info.classList.contains(
@@ -427,15 +634,10 @@ function updateControlsPosition(
         return;
     }
 
-    /*
-    Відкрита мобільна панель:
-    кнопки над нею.
-    */
-
     const panelHeight =
         info.getBoundingClientRect()
             .height;
 
     controls.style.bottom =
-        `${panelHeight + 14}px`;
+        `${panelHeight + 14 - dragOffset}px`;
 }
