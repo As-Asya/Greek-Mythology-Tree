@@ -174,7 +174,7 @@ body {
 
 
 /* =========================
-ОПИС — АБЗАЦИ
+ОПИС
 ========================= */
 
 #info .description {
@@ -716,13 +716,13 @@ body {
             100%;
 
         max-height:
-            38vh;
+            48vh;
 
         box-sizing:
             border-box;
 
         padding:
-            22px 22px 28px;
+            24px 24px 32px;
 
         border-left:
             none;
@@ -732,23 +732,23 @@ body {
             #DED5C4;
 
         border-radius:
-            22px 22px 0 0;
+            24px 24px 0 0;
 
         background:
             rgba(
                 252,
                 250,
                 245,
-                0.98
+                0.99
             );
 
         box-shadow:
-            0 -8px 28px
+            0 -10px 30px
             rgba(
                 64,
                 52,
                 33,
-                0.14
+                0.16
             );
 
         overflow-y:
@@ -773,13 +773,13 @@ body {
             block;
 
         width:
-            44px;
+            52px;
 
         height:
-            5px;
+            6px;
 
         margin:
-            -10px auto 16px;
+            -10px auto 18px;
 
         border-radius:
             999px;
@@ -806,24 +806,27 @@ body {
 
     #info h2 {
         margin:
-            0 0 8px;
+            0 0 10px;
 
         padding-bottom:
-            10px;
+            12px;
 
         padding-right:
-            40px;
+            44px;
 
         font-size:
-            24px;
+            27px;
+
+        line-height:
+            1.15;
     }
 
     #info h3 {
-        margin-top:
-            20px;
+        margin:
+            22px 0 11px;
 
         font-size:
-            17px;
+            19px;
     }
 
 
@@ -834,18 +837,41 @@ body {
     #info p,
     #info li {
         font-size:
-            15px;
+            17px;
 
         line-height:
-            1.55;
+            1.6;
     }
 
     #info .description .description-paragraph {
         margin-bottom:
-            16px;
+            18px;
 
         line-height:
-            1.6;
+            1.65;
+    }
+
+    #info ul {
+        margin-top:
+            10px;
+
+        padding-left:
+            24px;
+    }
+
+    #info li {
+        margin-bottom:
+            10px;
+    }
+
+
+    /* =====================
+    ПОСИЛАННЯ
+    ===================== */
+
+    .person-link {
+        font-size:
+            17px;
     }
 
 
@@ -855,39 +881,59 @@ body {
 
     #search {
         top:
-            12px;
+            14px;
 
         left:
-            12px;
+            14px;
 
         width:
             calc(
-                100vw - 24px
+                100vw - 28px
             );
     }
 
     #searchInput {
         padding:
-            12px 14px;
+            14px 16px;
+
+        min-height:
+            48px;
 
         border-radius:
-            12px;
+            14px;
 
         font-size:
-            16px;
+            17px;
     }
 
     #searchResults {
         max-height:
-            220px;
+            250px;
 
         margin-top:
-            5px;
+            6px;
+
+        border-radius:
+            14px;
     }
 
     .search-result {
         padding:
-            12px 14px;
+            14px 16px;
+
+        min-height:
+            48px;
+
+        box-sizing:
+            border-box;
+
+        font-size:
+            17px;
+    }
+
+    .no-results {
+        padding:
+            14px 16px;
 
         font-size:
             16px;
@@ -903,16 +949,13 @@ body {
             fixed;
 
         left:
-            12px;
+            14px;
 
         top:
             auto;
 
         bottom:
-            20px;
-
-        transform:
-            none;
+            18px;
 
         display:
             flex;
@@ -921,7 +964,7 @@ body {
             column;
 
         gap:
-            7px;
+            9px;
 
         z-index:
             250;
@@ -935,21 +978,21 @@ body {
 
     #controls button {
         width:
-            42px;
+            50px;
 
         height:
-            42px;
+            50px;
 
         border-radius:
-            12px;
+            14px;
 
         font-size:
-            19px;
+            22px;
     }
 
     #compareButton {
         font-size:
-            18px;
+            21px;
     }
 
 
@@ -962,26 +1005,43 @@ body {
             none;
     }
 }
+
+
 /* =========================
 ПОРІВНЯННЯ
 ========================= */
 
 node.compare-first {
-    background-color: #FFE39A;
-    border-color: #C28A00;
-    border-width: 4px;
+    background-color:
+        #FFE39A;
+
+    border-color:
+        #C28A00;
+
+    border-width:
+        4px;
 }
 
 node.compare-second {
-    background-color: #BFD9FF;
-    border-color: #4F8BFF;
-    border-width: 4px;
+    background-color:
+        #BFD9FF;
+
+    border-color:
+        #4F8BFF;
+
+    border-width:
+        4px;
 }
 
 node.compare-common {
-    background-color: #BFE8C5;
-    border-color: #3F8F4D;
-    border-width: 4px;
+    background-color:
+        #BFE8C5;
+
+    border-color:
+        #3F8F4D;
+
+    border-width:
+        4px;
 }
 
 
@@ -990,19 +1050,34 @@ node.compare-common {
 ========================= */
 
 edge.compare-first {
-    line-color: #C28A00;
-    width: 4px;
-    opacity: 1;
+    line-color:
+        #C28A00;
+
+    width:
+        4px;
+
+    opacity:
+        1;
 }
 
 edge.compare-second {
-    line-color: #4F8BFF;
-    width: 4px;
-    opacity: 1;
+    line-color:
+        #4F8BFF;
+
+    width:
+        4px;
+
+    opacity:
+        1;
 }
 
 edge.compare-common {
-    line-color: #3F8F4D;
-    width: 4px;
-    opacity: 1;
+    line-color:
+        #3F8F4D;
+
+    width:
+        4px;
+
+    opacity:
+        1;
 }

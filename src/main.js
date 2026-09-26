@@ -18,6 +18,10 @@ import {
 cytoscape.use(dagre);
 
 
+/* =========================
+ЗАПУСК
+========================= */
+
 async function start() {
 
     /* =========================
@@ -204,6 +208,54 @@ async function start() {
 
 
     /* =========================
+    АДАПТИВНІ РОЗМІРИ
+    ========================= */
+
+    const isMobile =
+        window.innerWidth <= 768;
+
+    const characterWidth =
+        isMobile
+            ? 205
+            : 170;
+
+    const characterHeight =
+        isMobile
+            ? 88
+            : 75;
+
+    const characterFontSize =
+        isMobile
+            ? 21
+            : 18;
+
+    const characterTextWidth =
+        isMobile
+            ? 180
+            : 145;
+
+    const nodeSep =
+        isMobile
+            ? 45
+            : 85;
+
+    const rankSep =
+        isMobile
+            ? 105
+            : 170;
+
+    const edgeSep =
+        isMobile
+            ? 18
+            : 25;
+
+    const graphPadding =
+        isMobile
+            ? 35
+            : 80;
+
+
+    /* =========================
     CYTOSCAPE
     ========================= */
 
@@ -240,10 +292,10 @@ async function start() {
                             "round-rectangle",
 
                         width:
-                            170,
+                            characterWidth,
 
                         height:
-                            75,
+                            characterHeight,
 
                         "background-color":
                             "#F3EBDD",
@@ -258,7 +310,7 @@ async function start() {
                             "#2B2B2B",
 
                         "font-size":
-                            18,
+                            characterFontSize,
 
                         "font-weight":
                             "bold",
@@ -273,7 +325,7 @@ async function start() {
                             "wrap",
 
                         "text-max-width":
-                            145
+                            characterTextWidth
                     }
                 },
 
@@ -614,13 +666,13 @@ async function start() {
                     "TB",
 
                 nodeSep:
-                    85,
+                    nodeSep,
 
                 rankSep:
-                    170,
+                    rankSep,
 
                 edgeSep:
-                    25,
+                    edgeSep,
 
                 ranker:
                     "network-simplex",
@@ -632,7 +684,7 @@ async function start() {
                     true,
 
                 padding:
-                    80
+                    graphPadding
             }
         });
 
@@ -705,102 +757,108 @@ async function start() {
         );
 
 
-    searchInput.addEventListener(
-        "input",
-        () => {
+    if (
+        searchInput &&
+        searchResults
+    ) {
 
-            const query =
-                searchInput.value
-                    .trim()
-                    .toLowerCase();
+        searchInput.addEventListener(
+            "input",
+            () => {
 
-            searchResults.innerHTML =
-                "";
+                const query =
+                    searchInput.value
+                        .trim()
+                        .toLowerCase();
 
-
-            if (
-                query === ""
-            ) {
-                return;
-            }
+                searchResults.innerHTML =
+                    "";
 
 
-            const matches =
-                data.characters.filter(
-                    (character) =>
-                        character.name
-                            .toLowerCase()
-                            .includes(
-                                query
-                            )
-                );
+                if (
+                    query === ""
+                ) {
+                    return;
+                }
 
 
-            if (
-                matches.length === 0
-            ) {
-
-                const message =
-                    document.createElement(
-                        "div"
+                const matches =
+                    data.characters.filter(
+                        (character) =>
+                            character.name
+                                .toLowerCase()
+                                .includes(
+                                    query
+                                )
                     );
 
-                message.className =
-                    "no-results";
 
-                message.textContent =
-                    "Нічого не знайдено";
+                if (
+                    matches.length === 0
+                ) {
 
-                searchResults.appendChild(
-                    message
-                );
-
-                return;
-            }
-
-
-            matches.forEach(
-                (character) => {
-
-                    const button =
+                    const message =
                         document.createElement(
-                            "button"
+                            "div"
                         );
 
-                    button.type =
-                        "button";
+                    message.className =
+                        "no-results";
 
-                    button.className =
-                        "search-result";
-
-                    button.textContent =
-                        character.name;
-
-
-                    button.addEventListener(
-                        "click",
-                        () => {
-
-                            focusCharacter(
-                                character.id
-                            );
-
-                            searchInput.value =
-                                "";
-
-                            searchResults.innerHTML =
-                                "";
-                        }
-                    );
-
+                    message.textContent =
+                        "Нічого не знайдено";
 
                     searchResults.appendChild(
-                        button
+                        message
                     );
+
+                    return;
                 }
-            );
-        }
-    );
+
+
+                matches.forEach(
+                    (character) => {
+
+                        const button =
+                            document.createElement(
+                                "button"
+                            );
+
+                        button.type =
+                            "button";
+
+                        button.className =
+                            "search-result";
+
+                        button.textContent =
+                            character.name;
+
+
+                        button.addEventListener(
+                            "click",
+                            () => {
+
+                                focusCharacter(
+                                    character.id
+                                );
+
+                                searchInput.value =
+                                    "";
+
+                                searchResults.innerHTML =
+                                    "";
+                            }
+                        );
+
+
+                        searchResults.appendChild(
+                            button
+                        );
+                    }
+                );
+            }
+        );
+    }
 
 
     /* =========================
@@ -832,64 +890,75 @@ async function start() {
     ЗБІЛЬШЕННЯ
     ========================= */
 
-    zoomInButton.addEventListener(
-        "click",
-        () => {
+    if (zoomInButton) {
 
-            cy.zoom({
-                level:
-                    cy.zoom() * 1.2,
+        zoomInButton.addEventListener(
+            "click",
+            () => {
 
-                renderedPosition: {
-                    x:
-                        cy.width() / 2,
+                cy.zoom({
+                    level:
+                        cy.zoom() * 1.2,
 
-                    y:
-                        cy.height() / 2
-                }
-            });
-        }
-    );
+                    renderedPosition: {
+                        x:
+                            cy.width() / 2,
+
+                        y:
+                            cy.height() / 2
+                    }
+                });
+            }
+        );
+    }
 
 
     /* =========================
     ЗМЕНШЕННЯ
     ========================= */
 
-    zoomOutButton.addEventListener(
-        "click",
-        () => {
+    if (zoomOutButton) {
 
-            cy.zoom({
-                level:
-                    cy.zoom() / 1.2,
+        zoomOutButton.addEventListener(
+            "click",
+            () => {
 
-                renderedPosition: {
-                    x:
-                        cy.width() / 2,
+                cy.zoom({
+                    level:
+                        cy.zoom() / 1.2,
 
-                    y:
-                        cy.height() / 2
-                }
-            });
-        }
-    );
+                    renderedPosition: {
+                        x:
+                            cy.width() / 2,
+
+                        y:
+                            cy.height() / 2
+                    }
+                });
+            }
+        );
+    }
 
 
     /* =========================
     FIT
     ========================= */
 
-    fitButton.addEventListener(
-        "click",
-        () => {
+    if (fitButton) {
 
-            cy.fit(
-                cy.elements(),
-                80
-            );
-        }
-    );
+        fitButton.addEventListener(
+            "click",
+            () => {
+
+                cy.fit(
+                    cy.elements(),
+                    isMobile
+                        ? 35
+                        : 80
+                );
+            }
+        );
+    }
 
 
     /* =========================
