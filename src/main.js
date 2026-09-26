@@ -44,6 +44,14 @@ async function start() {
 
 
     /* =========================
+    ВИЗНАЧЕННЯ ПРИСТРОЮ
+    ========================= */
+
+    const isMobile =
+        window.innerWidth <= 768;
+
+
+    /* =========================
     ВУЗЛИ ПЕРСОНАЖІВ
     ========================= */
 
@@ -208,50 +216,47 @@ async function start() {
 
 
     /* =========================
-    АДАПТИВНІ РОЗМІРИ
+    АДАПТИВНІ ПАРАМЕТРИ
     ========================= */
-
-    const isMobile =
-        window.innerWidth <= 768;
 
     const characterWidth =
         isMobile
-            ? 205
+            ? 190
             : 170;
 
     const characterHeight =
         isMobile
-            ? 88
+            ? 82
             : 75;
 
     const characterFontSize =
         isMobile
-            ? 21
+            ? 19
             : 18;
 
     const characterTextWidth =
         isMobile
-            ? 180
+            ? 170
             : 145;
 
     const nodeSep =
         isMobile
-            ? 45
+            ? 30
             : 85;
 
     const rankSep =
         isMobile
-            ? 105
+            ? 75
             : 170;
 
     const edgeSep =
         isMobile
-            ? 18
+            ? 14
             : 25;
 
     const graphPadding =
         isMobile
-            ? 35
+            ? 15
             : 80;
 
 
@@ -953,7 +958,7 @@ async function start() {
                 cy.fit(
                     cy.elements(),
                     isMobile
-                        ? 35
+                        ? 15
                         : 80
                 );
             }
@@ -1042,7 +1047,7 @@ async function start() {
         ) {
 
             controls.style.bottom =
-                "20px";
+                "16px";
 
             return;
         }
@@ -1054,7 +1059,7 @@ async function start() {
 
 
         controls.style.bottom =
-            `${panelHeight + 14}px`;
+            `${panelHeight + 12}px`;
     }
 
 

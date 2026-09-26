@@ -670,6 +670,10 @@ body {
 
 @media (max-width: 768px) {
 
+    /* =====================
+    ОСНОВНИЙ LAYOUT
+    ===================== */
+
     #layout {
         display:
             block;
@@ -894,16 +898,16 @@ body {
 
     #searchInput {
         padding:
-            14px 16px;
+            13px 15px;
 
         min-height:
-            48px;
+            46px;
 
         border-radius:
-            14px;
+            13px;
 
         font-size:
-            17px;
+            16px;
     }
 
     #searchResults {
@@ -914,26 +918,26 @@ body {
             6px;
 
         border-radius:
-            14px;
+            13px;
     }
 
     .search-result {
         padding:
-            14px 16px;
+            12px 15px;
 
         min-height:
-            48px;
+            46px;
 
         box-sizing:
             border-box;
 
         font-size:
-            17px;
+            16px;
     }
 
     .no-results {
         padding:
-            14px 16px;
+            13px 15px;
 
         font-size:
             16px;
@@ -955,7 +959,7 @@ body {
             auto;
 
         bottom:
-            18px;
+            16px;
 
         display:
             flex;
@@ -964,7 +968,7 @@ body {
             column;
 
         gap:
-            9px;
+            8px;
 
         z-index:
             250;
@@ -978,21 +982,21 @@ body {
 
     #controls button {
         width:
-            50px;
+            44px;
 
         height:
-            50px;
+            44px;
 
         border-radius:
-            14px;
+            12px;
 
         font-size:
-            22px;
+            20px;
     }
 
     #compareButton {
         font-size:
-            21px;
+            19px;
     }
 
 
