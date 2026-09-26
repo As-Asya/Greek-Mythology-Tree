@@ -221,7 +221,7 @@ body {
 
 
 /* =========================
-ПОСИЛАННЯ НА ПЕРСОНАЖІВ
+ПОСИЛАННЯ
 ========================= */
 
 .person-link {
@@ -434,7 +434,7 @@ body {
 
 
 /* =========================
-РЕЖИМ ПОРІВНЯННЯ
+ПОРІВНЯННЯ
 ========================= */
 
 #compareButton {
@@ -671,7 +671,7 @@ body {
 @media (max-width: 768px) {
 
     /* =====================
-    ОСНОВНИЙ LAYOUT
+    LAYOUT
     ===================== */
 
     #layout {
@@ -700,7 +700,7 @@ body {
 
 
     /* =====================
-    ІНФО-ПАНЕЛЬ
+    ІНФОРМАЦІЙНА ПАНЕЛЬ
     ===================== */
 
     #info {
@@ -720,13 +720,13 @@ body {
             100%;
 
         max-height:
-            48vh;
+            38vh;
 
         box-sizing:
             border-box;
 
         padding:
-            24px 24px 32px;
+            20px 22px 26px;
 
         border-left:
             none;
@@ -736,7 +736,7 @@ body {
             #DED5C4;
 
         border-radius:
-            24px 24px 0 0;
+            22px 22px 0 0;
 
         background:
             rgba(
@@ -777,13 +777,13 @@ body {
             block;
 
         width:
-            52px;
+            48px;
 
         height:
-            6px;
+            5px;
 
         margin:
-            -10px auto 18px;
+            -8px auto 15px;
 
         border-radius:
             999px;
@@ -810,16 +810,16 @@ body {
 
     #info h2 {
         margin:
-            0 0 10px;
+            0 0 9px;
 
         padding-bottom:
-            12px;
+            10px;
 
         padding-right:
-            44px;
+            35px;
 
         font-size:
-            27px;
+            24px;
 
         line-height:
             1.15;
@@ -827,10 +827,10 @@ body {
 
     #info h3 {
         margin:
-            22px 0 11px;
+            18px 0 9px;
 
         font-size:
-            19px;
+            18px;
     }
 
 
@@ -841,31 +841,31 @@ body {
     #info p,
     #info li {
         font-size:
-            17px;
+            16px;
 
         line-height:
-            1.6;
+            1.55;
     }
 
     #info .description .description-paragraph {
         margin-bottom:
-            18px;
+            15px;
 
         line-height:
-            1.65;
+            1.55;
     }
 
     #info ul {
         margin-top:
-            10px;
+            8px;
 
         padding-left:
-            24px;
+            22px;
     }
 
     #info li {
         margin-bottom:
-            10px;
+            8px;
     }
 
 
@@ -875,7 +875,7 @@ body {
 
     .person-link {
         font-size:
-            17px;
+            16px;
     }
 
 
@@ -912,7 +912,7 @@ body {
 
     #searchResults {
         max-height:
-            250px;
+            230px;
 
         margin-top:
             6px;

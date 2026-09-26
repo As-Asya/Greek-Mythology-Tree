@@ -221,22 +221,22 @@ async function start() {
 
     const characterWidth =
         isMobile
-            ? 190
+            ? 210
             : 170;
 
     const characterHeight =
         isMobile
-            ? 82
+            ? 90
             : 75;
 
     const characterFontSize =
         isMobile
-            ? 19
+            ? 20
             : 18;
 
     const characterTextWidth =
         isMobile
-            ? 170
+            ? 190
             : 145;
 
     const nodeSep =
@@ -695,6 +695,25 @@ async function start() {
 
 
     /* =========================
+    МОБІЛЬНИЙ МАСШТАБ
+    ========================= */
+
+    if (isMobile) {
+
+        requestAnimationFrame(
+            () => {
+
+                cy.zoom(
+                    cy.zoom() * 1.45
+                );
+
+                cy.center();
+            }
+        );
+    }
+
+
+    /* =========================
     ЗАБОРОНА ПЕРЕТЯГУВАННЯ
     ========================= */
 
@@ -961,6 +980,15 @@ async function start() {
                         ? 15
                         : 80
                 );
+
+                if (isMobile) {
+
+                    cy.zoom(
+                        cy.zoom() * 1.45
+                    );
+
+                    cy.center();
+                }
             }
         );
     }
